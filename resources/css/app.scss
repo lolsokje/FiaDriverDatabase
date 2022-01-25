@@ -1,1 +1,52 @@
+@import 'variables';
+
 @import 'bootstrap';
+
+body {
+  background-color: $dark;
+  color: $color;
+}
+
+a {
+  text-decoration: none;
+}
+
+.table-dark {
+  & > :not(:first-child) {
+    border-top: none;
+  }
+
+  th {
+    font-size: 1.1rem;
+  }
+
+  td {
+    font-size: 1.1rem;
+  }
+
+  th {
+    background-color: $darker;
+    padding: 1rem;
+  }
+
+  tbody {
+    tr, td {
+      padding: 0.5rem 1rem;
+    }
+
+    tr:hover {
+      td {
+        background-color: $lighter;
+        border-color: $dark;
+      }
+    }
+  }
+}
+
+.centered {
+  text-align: center;
+
+  &.small {
+    width: 90px;
+  }
+}
