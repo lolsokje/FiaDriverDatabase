@@ -7,11 +7,13 @@
     "require": {
         "php": "^8.0",
         "fruitcake/laravel-cors": "^2.0",
+        "godruoyi/php-snowflake": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "inertiajs/inertia-laravel": "^0.5.4",
         "laravel/framework": "^8.75",
-        "laravel/sanctum": "^2.11",
+        "laravel/socialite": "^5.3",
         "laravel/tinker": "^2.5",
+        "socialiteproviders/discord": "^4.1",
         "tightenco/ziggy": "^1.4"
     },
     "require-dev": {

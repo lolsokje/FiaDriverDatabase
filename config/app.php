@@ -2,6 +2,8 @@
 
 return [
 
+    'admin_panel_url' => env('ADMIN_PANEL_URL'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -165,6 +167,7 @@ return [
         /*
          * Package Service Providers...
          */
+        \SocialiteProviders\Manager\ServiceProvider::class,
 
         /*
          * Application Service Providers...
