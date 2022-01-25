@@ -19,7 +19,7 @@ class OwnerController extends Controller
     public function index(): Response
     {
         return Inertia::render('Admin/Owners/Index', [
-            'owners' => Owner::all(),
+            'owners' => Owner::query()->orderBy('name')->get(),
         ]);
     }
 
