@@ -34,6 +34,6 @@ class DiscordController extends Controller
 
         Auth::login($user);
 
-        return redirect(route('index'))->with('notice', 'Logged in as admin');
+        return redirect(route('admin.index'))->with('notice', 'Logged in as admin');
     }
 }

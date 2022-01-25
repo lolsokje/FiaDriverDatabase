@@ -7,6 +7,11 @@ use Inertia\Response;
 
 class AdminController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except('login');
+    }
+
     public function index(): Response
     {
         return Inertia::render('Admin/Index');
