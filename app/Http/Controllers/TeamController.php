@@ -20,8 +20,12 @@ class TeamController extends Controller
 
     public function index(): Response
     {
+        $teams = Team::query()->orderBy('name')->with('series', 'owner')->get()->sortBy('series.name');
+
         return Inertia::render('Admin/Teams/Index', [
-            'teams' => Team::query()->orderBy('name')->with('series', 'owner')->get(),
+            'teams' => $teams->values()->all(),
+            'owners' => Owner::query()->orderBy('name')->get(),
+            'series' => Series::query()->orderBy('name')->get(),
         ]);
     }
 

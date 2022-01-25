@@ -8,6 +8,9 @@
 				<li class="nav-item">
 					<InertiaLink :href="route('admin.owners.index')" class="nav-link">Owners</InertiaLink>
 				</li>
+				<li class="nav-item">
+					<InertiaLink :href="route('admin.teams.index')" class="nav-link">Teams</InertiaLink>
+				</li>
 			</ul>
 		</div>
 	</nav>
