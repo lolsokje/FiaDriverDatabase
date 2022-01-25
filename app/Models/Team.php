@@ -5,9 +5,9 @@ namespace App\Models;
 use App\Traits\Snowflake;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Series extends Model
+class Team extends Model
 {
     use HasFactory, Snowflake;
 
@@ -16,8 +16,13 @@ class Series extends Model
         'updated_at',
     ];
 
-    public function teams(): HasMany
+    public function series(): BelongsTo
     {
-        return $this->hasMany(Team::class);
+        return $this->belongsTo(Series::class);
+    }
+
+    public function owner(): BelongsTo
+    {
+        return $this->belongsTo(Owner::class);
     }
 }

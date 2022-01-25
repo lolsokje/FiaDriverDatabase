@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\DiscordController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\SeriesController;
+use App\Http\Controllers\TeamController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('', [HomeController::class, 'index'])->name('index');
@@ -18,4 +19,5 @@ Route::group(['prefix' => config('app.admin_panel_url'), 'as' => 'admin.'], func
 
     Route::resource('series', SeriesController::class)->except('destroy');
     Route::resource('owners', OwnerController::class)->except('destroy');
+    Route::resource('teams', TeamController::class)->except('destroy');
 });
