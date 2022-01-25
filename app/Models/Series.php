@@ -14,8 +14,4 @@ class Series extends Model
         'created_at',
         'updated_at',
     ];
-
-    protected $casts = [
-        'id' => 'string',
-    ];
 }
