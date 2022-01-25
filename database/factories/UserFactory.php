@@ -19,4 +19,13 @@ class UserFactory extends Factory
             'is_admin' => false,
         ];
     }
+
+    public function admin()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'is_admin' => true,
+            ];
+        });
+    }
 }

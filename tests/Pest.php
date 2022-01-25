@@ -11,6 +11,7 @@
 |
 */
 
+use App\Models\User;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 
 uses(Tests\TestCase::class, LazilyRefreshDatabase::class)->in('Feature', 'Unit');
@@ -41,7 +42,7 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+function createAdminUser(): User
 {
-    // ..
+    return User::factory()->admin()->create();
 }
