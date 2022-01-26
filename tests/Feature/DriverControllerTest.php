@@ -133,7 +133,7 @@ test('an admin can update an existing driver', function () {
     expect($driver->team_id)->toBe($teams->last()->id);
     expect($driver->first_name)->toBe($firstName);
     expect($driver->last_name)->toBe($lastName);
-    expect($driver->dob)->toBe($dob);
+    expect($driver->dob->format('Y-m-d'))->toBe($dob);
     expect($driver->rating)->toBe($rating);
 });
 
