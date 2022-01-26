@@ -22,4 +22,13 @@ class DriverFactory extends Factory
             'rating' => $this->faker->numberBetween(1, 100),
         ];
     }
+
+    public function freeAgent()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'team_id' => null,
+            ];
+        });
+    }
 }

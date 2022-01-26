@@ -25,7 +25,7 @@ class DriverCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'team_id' => ['required', 'exists:teams,id'],
+            'team_id' => ['nullable', 'exists:teams,id'],
             'first_name' => ['required'],
             'last_name' => ['required'],
             'dob' => ['required', 'date'],

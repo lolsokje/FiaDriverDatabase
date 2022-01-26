@@ -31,7 +31,7 @@ class Driver extends Model
 
     public function dateOfBirth(): Attribute
     {
-        return Attribute::get(fn() => $this->dob->format('m/d/Y'));
+        return Attribute::get(fn() => $this->dob->format('d/m/Y'));
     }
 
     public function team(): BelongsTo
@@ -41,11 +41,11 @@ class Driver extends Model
 
     public function owner(): Attribute
     {
-        return Attribute::get(fn() => $this->team->owner);
+        return Attribute::get(fn() => $this->team?->owner);
     }
 
     public function series(): Attribute
     {
-        return Attribute::get(fn() => $this->team->series);
+        return Attribute::get(fn() => $this->team?->series);
     }
 }

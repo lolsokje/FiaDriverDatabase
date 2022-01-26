@@ -30,6 +30,20 @@
 				<InertiaLink :href="route('admin.drivers.show', [driver])">view</InertiaLink>
 			</td>
 		</tr>
+		<tr v-for="freeAgent in freeAgents" :key="freeAgent.id">
+			<td>{{ freeAgent.full_name }}</td>
+			<td>Free agent</td>
+			<td>N/A</td>
+			<td class="centered medium">N/A</td>
+			<td class="centered medium">{{ freeAgent.date_of_birth }}</td>
+			<td class="centered medium">{{ freeAgent.rating }}</td>
+			<td class="centered small">
+				<InertiaLink :href="route('admin.drivers.edit', [freeAgent])">edit</InertiaLink>
+			</td>
+			<td class="centered small">
+				<InertiaLink :href="route('admin.drivers.show', [freeAgent])">view</InertiaLink>
+			</td>
+		</tr>
 		</tbody>
 	</table>
 </template>
@@ -37,6 +51,10 @@
 <script setup>
 defineProps({
 	drivers: {
+		type: Array,
+		required: true,
+	},
+	freeAgents: {
 		type: Array,
 		required: true,
 	},

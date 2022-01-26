@@ -12,8 +12,8 @@
 				</div>
 
 				<div class="col-6">
-					<label for="team" class="form-label">Team</label>
-					<select v-model="form.team_id" id="team" class="form-control" required>
+					<label for="team" class="form-label">Team (leave blank for free agent)</label>
+					<select v-model="form.team_id" id="team" class="form-control">
 						<option value="">Select a team</option>
 						<option v-for="team in teams" :key="team.id" :value="team.id">{{ team.name }}</option>
 					</select>

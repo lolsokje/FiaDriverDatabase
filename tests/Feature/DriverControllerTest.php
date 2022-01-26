@@ -206,3 +206,30 @@ test('the rating must be a positive integer', function () {
         ])
         ->assertSessionHasErrors(['rating' => 'The rating must be an integer.']);
 });
+
+test('the driver can be a free agent', function () {
+    $this->actingAs(createAdminUser())
+        ->post(route('admin.drivers.store'), [
+            'team_id' => '',
+            'first_name' => faker()->firstName(),
+            'last_name' => faker()->lastName(),
+            'dob' => faker()->date(),
+            'rating' => faker()->numberBetween(1, 100),
+        ])
+        ->assertRedirect(route('admin.drivers.index'))
+        ->assertSessionHasNoErrors();
+});
+
+test('free agents are shown on the driver index page', function () {
+    Driver::factory(10)->create();
+    Driver::factory(2)->freeAgent()->create();
+
+    $this->actingAs(createAdminUser())
+        ->get(route('admin.drivers.index'))
+        ->assertOk()
+        ->assertInertia(fn(AssertableInertia $page) => $page
+            ->component('Admin/Drivers/Index')
+            ->has('drivers', 10)
+            ->has('freeAgents', 2)
+        );
+});
