@@ -14,6 +14,9 @@
 				<li class="nav-item">
 					<InertiaLink :href="route('admin.drivers.index')" class="nav-link">Drivers</InertiaLink>
 				</li>
+				<li class="nav-item">
+					<InertiaLink :href="route('admin.settings.show')" class="nav-link">Settings</InertiaLink>
+				</li>
 			</ul>
 		</div>
 	</nav>
