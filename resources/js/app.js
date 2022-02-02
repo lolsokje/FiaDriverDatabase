@@ -3,6 +3,7 @@ import { createInertiaApp, Link } from '@inertiajs/inertia-vue3';
 import route from 'ziggy';
 import Main from './Shared/Layouts/Main';
 import Admin from './Shared/Layouts/Admin';
+import 'bootstrap';
 
 createInertiaApp({
     resolve: name => {
