@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Settings\GeneralSettings;
 use Godruoyi\Snowflake\RandomSequenceResolver;
 use Godruoyi\Snowflake\Snowflake;
 use Illuminate\Database\Eloquent\Model;
@@ -23,6 +24,10 @@ class AppServiceProvider extends ServiceProvider
             )
                 ->setStartTimeStamp(strtotime('2022-01-25') * 1000)
                 ->setSequenceResolver(new RandomSequenceResolver());
+        });
+
+        $this->app->singleton('general_settings', function () {
+            return (new GeneralSettings());
         });
     }
 

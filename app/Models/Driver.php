@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\Snowflake;
+use DateTime;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -17,6 +18,7 @@ class Driver extends Model
         'series',
         'full_name',
         'date_of_birth',
+        'age',
     ];
 
     protected $casts = [
@@ -32,6 +34,14 @@ class Driver extends Model
     public function dateOfBirth(): Attribute
     {
         return Attribute::get(fn() => $this->dob->format('d/m/Y'));
+    }
+
+    public function age(): Attribute
+    {
+        return Attribute::get(function () {
+            $year = resolve('general_settings')->year;
+            return $this->dob->diff(new DateTime("01-03-$year"))->y;
+        });
     }
 
     public function team(): BelongsTo
