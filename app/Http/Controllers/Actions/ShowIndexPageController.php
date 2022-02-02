@@ -14,7 +14,7 @@ class ShowIndexPageController extends Controller
     public function __invoke(Request $request): Response
     {
         return Inertia::render('Index', [
-            'drivers' => Driver::query()->with('team')->get(),
+            'drivers' => Driver::sortedBySeries(),
             'series' => Series::all(),
             'year' => resolve('general_settings')->year,
         ]);

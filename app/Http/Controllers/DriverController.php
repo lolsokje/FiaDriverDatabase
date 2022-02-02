@@ -14,8 +14,8 @@ class DriverController extends Controller
     public function index(): Response
     {
         return Inertia::render('Admin/Drivers/Index', [
-            'drivers' => Driver::query()->whereNotNull('team_id')->with('team')->get(),
-            'freeAgents' => Driver::query()->whereNull('team_id')->get(),
+            'drivers' => Driver::withoutFreeAgents()->sortedBySeries(),
+            'freeAgents' => Driver::freeAgents()->get(),
         ]);
     }
 

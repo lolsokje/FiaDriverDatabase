@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\Snowflake;
 use DateTime;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -57,5 +58,35 @@ class Driver extends Model
     public function series(): Attribute
     {
         return Attribute::get(fn() => $this->team?->series);
+    }
+
+    public function scopeWithoutFreeAgents(Builder $query): Builder
+    {
+        return $query->whereNotNull('team_id');
+    }
+
+    public function scopeFreeAgents(Builder $query): Builder
+    {
+        return $query->whereNull('team_id');
+    }
+
+    public function scopeSortedBySeries(Builder $query): array
+    {
+        return $query
+            ->with(['team' => fn(BelongsTo $relation) => $relation->orderBy('name')])
+            ->get()
+            ->sort(function ($a, $b) {
+                if (!isset($a['series'])) {
+                    return true;
+                }
+
+                if (!isset($b['series'])) {
+                    return false;
+                }
+
+                return $a['series']['name'] > $b['series']['name'];
+            })
+            ->values()
+            ->all();
     }
 }
