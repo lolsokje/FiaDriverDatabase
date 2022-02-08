@@ -7,6 +7,7 @@
 				<div class="col-6">
 					<label for="series" class="form-label">Series</label>
 					<select v-model="form.series_id" id="series" class="form-control" @change="getTeams">
+						<option value="">Select a series</option>
 						<option v-for="item in series" :key="item.id" :value="item.id">{{ item.name }}</option>
 					</select>
 				</div>
@@ -14,7 +15,8 @@
 				<div class="col-6">
 					<label for="team" class="form-label">Team (leave blank for free agent)</label>
 					<select v-model="form.team_id" id="team" class="form-control">
-						<option value="">Select a team</option>
+						<option value="" v-if="teams.length">Select a team</option>
+						<option value="" v-else>Select a series first</option>
 						<option v-for="team in teams" :key="team.id" :value="team.id">{{ team.name }}</option>
 					</select>
 				</div>
@@ -68,11 +70,16 @@ const props = defineProps({
 	},
 });
 
-const teams = computed(() => props.series.find((serie) => serie.id === form.series_id).teams);
+const teams = computed(() => {
+	if (form.series_id) {
+		return props.series.find((serie) => serie.id === form.series_id).teams;
+	}
+	return [];
+});
 
 const form = useForm({
-	series_id: props.driver.team.series_id,
-	team_id: props.driver.team_id,
+	series_id: props.driver.team ? props.driver.team.series_id : '',
+	team_id: props.driver.team_id ?? '',
 	first_name: props.driver.first_name,
 	last_name: props.driver.last_name,
 	dob: props.driver.dob,

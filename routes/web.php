@@ -1,8 +1,11 @@
 <?php
 
+use App\Http\Controllers\Action\AddDriverToTeamController;
+use App\Http\Controllers\Action\DeleteDriverFromTeamController;
 use App\Http\Controllers\Actions\ShowIndexPageController;
 use App\Http\Controllers\Actions\ShowSettingsPageController;
 use App\Http\Controllers\Actions\StoreSettingsController;
+use App\Http\Controllers\Actions\UpdateDriverRatingController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\DiscordController;
 use App\Http\Controllers\DriverController;
@@ -30,5 +33,10 @@ Route::group(['prefix' => config('app.admin_panel_url'), 'as' => 'admin.'], func
 
         Route::get('settings', ShowSettingsPageController::class)->name('settings.show');
         Route::post('settings', StoreSettingsController::class)->name('settings.store')->middleware('settings.filter');
+
+        Route::put('drivers/ratings/update', UpdateDriverRatingController::class)->name('drivers.ratings.update');
+
+        Route::delete('{team}/{driver}', DeleteDriverFromTeamController::class)->name('teams.driver.delete');
+        Route::put('{team}/{driver}', AddDriverToTeamController::class)->name('teams.driver.add');
     });
 });
