@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Action\AddDriverToTeamController;
+use App\Http\Controllers\Action\DeleteDriverFromTeamController;
 use App\Http\Controllers\Actions\ShowIndexPageController;
 use App\Http\Controllers\Actions\ShowSettingsPageController;
 use App\Http\Controllers\Actions\StoreSettingsController;
@@ -30,5 +32,8 @@ Route::group(['prefix' => config('app.admin_panel_url'), 'as' => 'admin.'], func
 
         Route::get('settings', ShowSettingsPageController::class)->name('settings.show');
         Route::post('settings', StoreSettingsController::class)->name('settings.store')->middleware('settings.filter');
+
+        Route::delete('{team}/{driver}', DeleteDriverFromTeamController::class)->name('teams.driver.delete');
+        Route::put('{team}/{driver}', AddDriverToTeamController::class)->name('teams.driver.add');
     });
 });

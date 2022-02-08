@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TeamCreateRequest;
 use App\Http\Requests\TeamUpdateRequest;
+use App\Models\Driver;
 use App\Models\Owner;
 use App\Models\Series;
 use App\Models\Team;
@@ -47,7 +48,8 @@ class TeamController extends Controller
     public function show(Team $team): Response
     {
         return Inertia::render('Admin/Teams/View', [
-            'team' => $team->load('series', 'owner')
+            'team' => $team->load('series', 'owner', 'drivers'),
+            'drivers' => Driver::freeAgents()->orderBy('last_name')->get(),
         ]);
     }
 

@@ -233,3 +233,97 @@ test('free agents are shown on the driver index page', function () {
             ->has('freeAgents', 2)
         );
 });
+
+test('an admin can view the show team page', function () {
+    $team = Team::factory()->create();
+
+    $this->actingAs(createAdminUser())
+        ->get(route('admin.teams.show', [$team]))
+        ->assertOk()
+        ->assertInertia(fn(AssertableInertia $page) => $page
+            ->component('Admin/Teams/View')
+        );
+});
+
+test('a guest cant view the team view page', function () {
+    $team = Team::factory()->create();
+
+    $this->get(route('admin.teams.show', [$team]))
+        ->assertRedirect(route('index'));
+});
+
+it('shows all drivers belonging to a team', function () {
+    $team = Team::factory()->create();
+    Driver::factory(2)->for($team)->create();
+
+    $this->actingAs(createAdminUser())
+        ->get(route('admin.teams.show', [$team]))
+        ->assertOk()
+        ->assertInertia(fn(AssertableInertia $page) => $page
+            ->component('Admin/Teams/View')
+            ->has('team.drivers', 2)
+        );
+});
+
+it('only shows free agents on the team show page as selectable drivers', function () {
+    Driver::factory(10)->create();
+    Driver::factory(3)->freeAgent()->create();
+
+    $this->actingAs(createAdminUser())
+        ->get(route('admin.teams.show', [Driver::first()->team]))
+        ->assertOk()
+        ->assertInertia(fn(AssertableInertia $page) => $page
+            ->component('Admin/Teams/View')
+            ->has('drivers', 3)
+        );
+});
+
+test('an admin can delete a driver from a team', function () {
+    $team = Team::factory()->create();
+    $driver = Driver::factory()->for($team)->create();
+
+    expect(count($team->drivers))->toBeOne();
+
+    $this->actingAs(createAdminUser())
+        ->delete(route('admin.teams.driver.delete', [$team, $driver]))
+        ->assertRedirect(route('admin.teams.show', [$team]));
+
+    expect($team->fresh()->drivers)->toBeEmpty();
+});
+
+test('a guest cant delete a driver from a team', function () {
+    $team = Team::factory()->create();
+    $driver = Driver::factory()->for($team)->create();
+
+    expect(count($team->drivers))->toBeOne();
+
+    $this->delete(route('admin.teams.driver.delete', [$team, $driver]))
+        ->assertRedirect(route('index'));
+
+    expect(count($team->fresh()->drivers))->toBeOne();
+});
+
+test('an admin can add drivers to a team', function () {
+    $team = Team::factory()->create();
+    $driver = Driver::factory()->freeAgent()->create();
+
+    expect(count($team->drivers))->toBe(0);
+
+    $this->actingAs(createAdminUser())
+        ->put(route('admin.teams.driver.add', [$team, $driver]))
+        ->assertRedirect(route('admin.teams.show', [$team]));
+
+    expect(count($team->fresh()->drivers))->toBeOne();
+});
+
+test('a guest cant add drivers to a team', function () {
+    $team = Team::factory()->create();
+    $driver = Driver::factory()->freeAgent()->create();
+
+    expect(count($team->drivers))->toBe(0);
+
+    $this->put(route('admin.teams.driver.add', [$team, $driver]))
+        ->assertRedirect(route('index'));
+
+    expect(count($team->fresh()->drivers))->toBe(0);
+});
