@@ -35,7 +35,7 @@ it('deletes existing ranges before saving new ones', function () {
         ->post(route('admin.development.store'), [
             'ageRanges' => getRanges(),
         ])
-        ->assertRedirect(route('admin.development.store'));
+        ->assertRedirect(route('admin.development.show'));
 
     expect(count(AgeRange::all()))->toBe(2);
     expect(count(DevRange::all()))->toBe(6);
@@ -50,6 +50,33 @@ it('shows the right amount of age and dev ranges on the development page', funct
         ->get(route('admin.development.show'))
         ->assertInertia(fn(AssertableInertia $page) => $page
             ->component('Admin/Development/Show')
+            ->has('ageRanges', 2)
+            ->has('ageRanges.0.ranges', 3)
+            ->has('ageRanges.1.ranges', 4)
+        );
+});
+
+test('an admin can view the development index page', function () {
+    $this->actingAs(createAdminUser())
+        ->get(route('admin.development.index'))
+        ->assertOk()
+        ->assertInertia(fn(AssertableInertia $page) => $page->component('Admin/Development/Index'));
+});
+
+test('a guest cant view the development index page', function () {
+    $this->get(route('admin.development.index'))
+        ->assertRedirect(route('index'));
+});
+
+it('shows the right amount of age and dev ranges on the index page', function () {
+    $ageRanges = AgeRange::factory(2)->create();
+    DevRange::factory(3)->for($ageRanges->first())->create();
+    DevRange::factory(4)->for($ageRanges->last())->create();
+
+    $this->actingAs(createAdminUser())
+        ->get(route('admin.development.index'))
+        ->assertInertia(fn(AssertableInertia $page) => $page
+            ->component('Admin/Development/Index')
             ->has('ageRanges', 2)
             ->has('ageRanges.0.ranges', 3)
             ->has('ageRanges.1.ranges', 4)

@@ -17,9 +17,6 @@
 				<li class="nav-item">
 					<InertiaLink :href="route('admin.settings.show')" class="nav-link">Settings</InertiaLink>
 				</li>
-				<li class="nav-item">
-					<InertiaLink :href="route('admin.development.show')" class="nav-link">Development</InertiaLink>
-				</li>
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
 					   data-bs-toggle="dropdown">
@@ -32,7 +29,9 @@
 							</InertiaLink>
 						</li>
 						<li>
-							<InertiaLink href="#" class="dropdown-item">Overview</InertiaLink>
+							<InertiaLink :href="route('admin.development.index')" class="dropdown-item">
+								Overview
+							</InertiaLink>
 						</li>
 						<li>
 							<InertiaLink href="#" class="dropdown-item">Perform dev</InertiaLink>
