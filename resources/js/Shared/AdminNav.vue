@@ -33,6 +33,25 @@
                     <InertiaLink href="#" class="dropdown-item">Perform dev</InertiaLink>
                 </li>
             </ul>
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+               data-bs-toggle="dropdown">
+                Development
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                    <InertiaLink :href="route('admin.development.show')" class="dropdown-item">
+                        Setup
+                    </InertiaLink>
+                </li>
+                <li>
+                    <InertiaLink :href="route('admin.development.index')" class="dropdown-item">
+                        Overview
+                    </InertiaLink>
+                </li>
+                <li>
+                    <InertiaLink href="#" class="dropdown-item">Perform dev</InertiaLink>
+                </li>
+            </ul>
         </div>
     </nav>
 </template>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Actions\DevelopmentIndexPageController;
 use App\Http\Controllers\Actions\ShowDevelopmentPageController;
 use App\Http\Controllers\Actions\StoreDevelopmentRangesController;
 use App\Http\Controllers\Action\AddDriverToTeamController;
@@ -42,6 +43,8 @@ Route::group(['prefix' => config('app.admin_panel_url'), 'as' => 'admin.'], func
         Route::put('{team}/{driver}', AddDriverToTeamController::class)->name('teams.driver.add');
 
         Route::get('development', ShowDevelopmentPageController::class)->name('development.show');
+        Route::get('development/show', ShowDevelopmentPageController::class)->name('development.show');
+        Route::get('development', DevelopmentIndexPageController::class)->name('development.index');
         Route::post('development', StoreDevelopmentRangesController::class)->name('development.store');
     });
 });
