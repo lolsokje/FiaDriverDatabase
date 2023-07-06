@@ -23,17 +23,23 @@
     </form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
+import Series from '@/Interfaces/Series/DetailedSeries';
 
-const props = defineProps({
-    series: {
-        type: Object,
-        required: true,
-    },
-});
+interface Props {
+    series: Series;
+}
 
-const form = useForm({
+interface Form {
+    name: string,
+    background_colour: string,
+    text_colour: string,
+}
+
+const props = defineProps<Props>();
+
+const form = useForm<Form>({
     name: props.series.name,
     background_colour: props.series.background_colour,
     text_colour: props.series.text_colour,

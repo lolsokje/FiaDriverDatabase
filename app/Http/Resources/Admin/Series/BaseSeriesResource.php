@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Resources\Admin;
+namespace App\Http\Resources\Admin\Series;
 
 use App\Models\Series;
 use App\Support\UnwrappedJsonResource;
 use Illuminate\Http\Request;
 
 /** @mixin Series */
-class SeriesResource extends UnwrappedJsonResource
+class BaseSeriesResource extends UnwrappedJsonResource
 {
     public function toArray(Request $request): array
     {

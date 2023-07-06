@@ -23,10 +23,16 @@
     </form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
 
-const form = useForm({
+interface Form {
+    name: string,
+    background_colour: string,
+    text_colour: string,
+}
+
+const form = useForm<Form>({
     name: '',
     background_colour: '#000000',
     text_colour: '#FFFFFF',
