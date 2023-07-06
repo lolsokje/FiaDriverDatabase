@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TeamCreateRequest;
 use App\Http\Requests\TeamUpdateRequest;
+use App\Http\Resources\Admin\Drivers\BaseDriverResource;
+use App\Http\Resources\Admin\Owners\BaseOwnerResource;
+use App\Http\Resources\Admin\Series\BaseSeriesResource;
+use App\Http\Resources\Admin\Teams\DetailedTeamResource;
 use App\Models\Driver;
 use App\Models\Owner;
 use App\Models\Series;
@@ -24,9 +28,9 @@ class TeamController extends Controller
         $teams = Team::query()->orderBy('name')->with('series', 'owner')->get()->sortBy('series.name');
 
         return Inertia::render('Admin/Teams/Index', [
-            'teams' => $teams->values()->all(),
-            'owners' => Owner::query()->orderBy('name')->get(),
-            'series' => Series::query()->orderBy('name')->get(),
+            'teams' => DetailedTeamResource::collection($teams->values()->all()),
+            'owners' => BaseOwnerResource::collection(Owner::query()->orderBy('name')->get()),
+            'series' => BaseSeriesResource::collection(Series::query()->orderBy('name')->get()),
         ]);
     }
 
@@ -42,23 +46,23 @@ class TeamController extends Controller
     {
         Team::create($request->validated());
 
-        return redirect(route('admin.teams.index'));
+        return to_route('admin.teams.index');
     }
 
     public function show(Team $team): Response
     {
-        return Inertia::render('Admin/Teams/View', [
-            'team' => $team->load('series', 'owner', 'drivers'),
-            'drivers' => Driver::freeAgents()->orderBy('last_name')->get(),
+        return Inertia::render('Admin/Teams/Show', [
+            'team' => new DetailedTeamResource($team->load('series', 'owner', 'drivers')),
+            'drivers' => BaseDriverResource::collection(Driver::freeAgents()->orderBy('last_name')->get()),
         ]);
     }
 
     public function edit(Team $team): Response
     {
         return Inertia::render('Admin/Teams/Edit', [
-            'team' => $team,
-            'series' => Series::query()->orderBy('name')->get(),
-            'owners' => Owner::query()->orderBy('name')->get(),
+            'team' => new DetailedTeamResource($team),
+            'series' => BaseSeriesResource::collection(Series::query()->orderBy('name')->get()),
+            'owners' => BaseOwnerResource::collection(Owner::query()->orderBy('name')->get()),
         ]);
     }
 
@@ -66,6 +70,6 @@ class TeamController extends Controller
     {
         $team->update($request->validated());
 
-        return redirect(route('admin.teams.index'));
+        return to_route('admin.teams.index');
     }
 }

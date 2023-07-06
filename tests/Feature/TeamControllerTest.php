@@ -1,35 +1,31 @@
 <?php
 
+use App\Models\Driver;
 use App\Models\Owner;
 use App\Models\Series;
 use App\Models\Team;
 use Inertia\Testing\AssertableInertia;
 
-use function Pest\Faker\faker;
-
 test('an admin can view the teams index page', function () {
-    $this->actingAs(createAdminUser())
-        ->get(route('admin.teams.index'))
-        ->assertOk()
-        ->assertInertia(fn (AssertableInertia $page) => $page
-            ->component('Admin/Teams/Index'),
-        );
-});
+    $series = Series::factory()->create();
+    Team::factory(3)->for($series)->create();
 
-it('shows the right amount of teams on the teams index page', function () {
-    Team::factory(3)->create();
+    $team = Team::query()->orderBy('name')->first();
 
     $this->actingAs(createAdminUser())
         ->get(route('admin.teams.index'))
         ->assertOk()
         ->assertInertia(fn (AssertableInertia $page) => $page
-            ->has('teams', 3),
+            ->component('Admin/Teams/Index')
+            ->has('teams', 3, fn (AssertableInertia $prop) => $prop
+                ->where('id', $team->id)
+                ->etc()),
         );
 });
 
-test('a guest cant view the teams index page', function () {
+test('a guest can not view the teams index page', function () {
     $this->get(route('admin.teams.index'))
-        ->assertRedirect(route('index'));
+        ->assertRedirectToRoute('index');
 });
 
 test('an admin can view the team create page', function () {
@@ -46,9 +42,9 @@ test('an admin can view the team create page', function () {
         );
 });
 
-test('a guest cant view the team create page', function () {
+test('a guest can not view the team create page', function () {
     $this->get(route('admin.teams.create'))
-        ->assertRedirect(route('index'));
+        ->assertRedirectToRoute('index');
 });
 
 test('an admin can create a team', function () {
@@ -63,12 +59,12 @@ test('an admin can create a team', function () {
         ])
         ->assertRedirect(route('admin.teams.index'));
 
-    expect(Team::all()->count())->toBe(1);
-    expect(count($series->teams))->toBe(1);
-    expect(count($owner->teams))->toBe(1);
+    $this->assertCount(1, Team::all());
+    $this->assertCount(1, $series->teams);
+    $this->assertCount(1, $owner->teams);
 });
 
-test('a guest cant create a team', function () {
+test('a guest can not create a team', function () {
     $series = Series::factory()->create();
     $owner = Owner::factory()->create();
 
@@ -77,11 +73,33 @@ test('a guest cant create a team', function () {
         'owner_id' => $owner->id,
         'name' => fake()->company(),
     ])
-        ->assertRedirect(route('index'));
+        ->assertRedirectToRoute('index');
 
-    expect(Team::all()->count())->toBe(0);
-    expect(count($series->teams))->toBe(0);
-    expect(count($owner->teams))->toBe(0);
+    $this->assertCount(0, Team::all());
+    $this->assertCount(0, $series->teams);
+    $this->assertCount(0, $owner->teams);
+});
+
+test('an admin can view the team details page', function () {
+    $team = Team::factory()->create();
+    [$firstDriver, $secondDriver] = Driver::factory(2)->for($team)->create();
+
+    $this->actingAs(createAdminUser())
+        ->get(route('admin.teams.show', $team))
+        ->assertOk()
+        ->assertInertia(fn (AssertableInertia $page) => $page
+            ->component('Admin/Teams/Show')
+            ->has('team', fn (AssertableInertia $prop) => $prop
+                ->where('drivers.0.id', $firstDriver->id)
+                ->where('drivers.1.id', $secondDriver->id)
+                ->etc()));
+});
+
+test('guests can not view the team details page', function () {
+    $team = Team::factory()->create();
+
+    $this->get(route('admin.teams.show', $team))
+        ->assertRedirectToRoute('index');
 });
 
 test('an admin can view the team edit page', function () {
@@ -99,13 +117,15 @@ test('an admin can view the team edit page', function () {
             ->component('Admin/Teams/Edit')
             ->has('series', 3)
             ->has('owners', 5)
-            ->has('team'),
+            ->has('team', fn (AssertableInertia $prop) => $prop
+                ->where('id', $team->id)
+                ->etc()),
         );
 });
 
-test('a guest cant view the team edit page', function () {
+test('a guest can not view the team edit page', function () {
     $this->get(route('admin.teams.edit', [Team::factory()->create()]))
-        ->assertRedirect(route('index'));
+        ->assertRedirectToRoute('index');
 });
 
 test('an admin can update an existing team', function () {
@@ -132,7 +152,7 @@ test('an admin can update an existing team', function () {
     expect($team->name)->toBe($name);
 });
 
-test('a guest cant update an existing team', function () {
+test('a guest can not update an existing team', function () {
     $series = Series::factory(3)->create();
     $owners = Owner::factory(5)->create();
 
@@ -149,12 +169,12 @@ test('a guest cant update an existing team', function () {
         'owner_id' => $owners->last()->id,
         'name' => $newName,
     ])
-        ->assertRedirect(route('index'));
+        ->assertRedirectToRoute('index');
 
     $team = $team->fresh();
-    expect($team->series_id)->toBe($series->first()->id);
-    expect($team->owner_id)->toBe($owners->first()->id);
-    expect($team->name)->toBe($oldName);
+    $this->assertEquals($series->first()->id, $team->series_id);
+    $this->assertEquals($owners->first()->id, $team->owner_id);
+    $this->assertEquals($oldName, $team->name);
 });
 
 test('the provided series must exist', function () {

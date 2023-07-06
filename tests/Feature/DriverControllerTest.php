@@ -241,7 +241,7 @@ test('an admin can view the show team page', function () {
         ->get(route('admin.teams.show', [$team]))
         ->assertOk()
         ->assertInertia(fn (AssertableInertia $page) => $page
-            ->component('Admin/Teams/View'),
+            ->component('Admin/Teams/Show'),
         );
 });
 
@@ -260,7 +260,7 @@ it('shows all drivers belonging to a team', function () {
         ->get(route('admin.teams.show', [$team]))
         ->assertOk()
         ->assertInertia(fn (AssertableInertia $page) => $page
-            ->component('Admin/Teams/View')
+            ->component('Admin/Teams/Show')
             ->has('team.drivers', 2),
         );
 });
@@ -273,7 +273,7 @@ it('only shows free agents on the team show page as selectable drivers', functio
         ->get(route('admin.teams.show', [Driver::first()->team]))
         ->assertOk()
         ->assertInertia(fn (AssertableInertia $page) => $page
-            ->component('Admin/Teams/View')
+            ->component('Admin/Teams/Show')
             ->has('drivers', 3),
         );
 });
