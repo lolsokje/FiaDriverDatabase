@@ -21,11 +21,12 @@
     </table>
 </template>
 
-<script setup>
-defineProps({
-    series: {
-        type: Array,
-        required: true,
-    },
-});
+<script setup lang="ts">
+import Series from '@/Interfaces/Series';
+
+interface Props {
+    series: Series[],
+}
+
+defineProps<Props>();
 </script>
