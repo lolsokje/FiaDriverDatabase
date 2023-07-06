@@ -68,7 +68,8 @@ test('an admin can view the series edit page', function () {
             ->component('Admin/Series/Edit')
             ->has('series', fn (AssertableInertia $prop) => $prop
                 ->where('id', $series->id)
-                ->where('name', $series->name)),
+                ->where('name', $series->name)
+                ->etc()),
         );
 });
 
