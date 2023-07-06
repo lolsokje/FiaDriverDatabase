@@ -4,7 +4,7 @@ namespace App\Http\Resources\Admin\Teams;
 
 use App\Http\Resources\Admin\Drivers\BaseDriverResource;
 use App\Http\Resources\Admin\Owners\BaseOwnerResource;
-use App\Http\Resources\Admin\Series\BaseSeriesResource;
+use App\Http\Resources\Admin\Series\DetailedSeriesResource;
 use App\Models\Team;
 use Illuminate\Http\Request;
 
@@ -17,7 +17,7 @@ class DetailedTeamResource extends BaseTeamResource
             'owner_id' => $this->owner_id,
             'series_id' => $this->series_id,
             'owner' => new BaseOwnerResource($this->whenLoaded('owner')),
-            'series' => new BaseSeriesResource($this->whenLoaded('series')),
+            'series' => new DetailedSeriesResource($this->whenLoaded('series')),
             'drivers' => BaseDriverResource::collection($this->whenLoaded('drivers')),
         ]);
     }

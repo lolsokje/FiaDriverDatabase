@@ -57,41 +57,38 @@
     </div>
 </template>
 
-<script setup>
-import { ref } from 'vue';
-
+<script setup lang="ts">
+import { Ref, ref } from 'vue';
 import { router } from '@inertiajs/vue3';
+import DetailedTeam from '@/Interfaces/Teams/DetailedTeam';
+import BaseDriver from '@/Interfaces/Drivers/BaseDriver';
 
-const props = defineProps({
-    team: {
-        type: Array,
-        required: true,
-    },
-    drivers: {
-        type: Array,
-        required: true,
-    },
-});
-
-const drivers = ref(props.team.drivers);
-const allDrivers = ref(props.drivers);
-const driver = ref('');
-const editMode = ref(false);
-
-function deleteDriver (driver) {
-    if (confirm(`Are you sure you want to remove this driver from ${props.team.name}?`)) {
-        drivers.value = drivers.value.filter((d) => d.id !== driver.id);
-
-        router.delete(route('admin.teams.driver.delete', [ props.team, driver ]), {
-            replace: true,
-            preserveState: true,
-        });
-
-        allDrivers.value.push(driver);
-    }
+interface Props {
+    team: DetailedTeam,
+    drivers: BaseDriver[],
 }
 
-function addDriver () {
+const props = defineProps<Props>();
+
+const drivers: Ref<BaseDriver[]> = ref(props.team.drivers);
+const allDrivers: Ref<BaseDriver[]> = ref(props.drivers);
+const driver: Ref<string> = ref('');
+const editMode: Ref<boolean> = ref(false);
+
+const deleteDriver = (driver: BaseDriver): void => {
+    if (! confirm(`Are you sure you want to remove this driver from ${props.team.name}?`)) {
+        return;
+    }
+
+    drivers.value = drivers.value.filter((d) => d.id !== driver.id);
+
+    router.delete(route('admin.teams.driver.delete', [ props.team, driver ]), {
+        replace: true,
+        preserveState: true,
+    });
+};
+
+const addDriver = (): void => {
     const id = driver.value;
 
     if (id === '') {
@@ -103,18 +100,23 @@ function addDriver () {
     }
 
     const newDriver = allDrivers.value.find((d) => d.id === id);
-    drivers.value.push(newDriver);
-    allDrivers.value = allDrivers.value.filter((d) => d.id !== newDriver.id);
 
-    driver.value = '';
+    if (! newDriver) {
+        return;
+    }
 
     router.put(route('admin.teams.driver.add', [ props.team, newDriver ]), {
         replace: true,
         preserveState: true,
     });
-}
 
-function saveDriverRatings () {
+    drivers.value.push(newDriver);
+    allDrivers.value = allDrivers.value.filter((d) => d.id !== newDriver.id);
+
+    driver.value = '';
+};
+
+const saveDriverRatings = (): void => {
     const params = drivers.value.map((driver) => {
         return {
             id: driver.id,
@@ -123,5 +125,5 @@ function saveDriverRatings () {
     });
 
     router.put(route('admin.drivers.ratings.update'), { drivers: params }, { replace: true, preserveState: true });
-}
+};
 </script>

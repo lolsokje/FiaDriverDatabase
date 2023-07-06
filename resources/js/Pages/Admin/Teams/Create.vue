@@ -31,21 +31,25 @@
     </form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
+import BaseOwner from '@/Interfaces/Owners/BaseOwner';
+import BaseSeries from '@/Interfaces/Series/BaseSeries';
 
-defineProps({
-    owners: {
-        type: Array,
-        required: true,
-    },
-    series: {
-        type: Array,
-        required: true,
-    },
-});
+interface Props {
+    owners: BaseOwner[],
+    series: BaseSeries[],
+}
 
-const form = useForm({
+interface Form {
+    name: string,
+    series_id: string,
+    owner_id: string,
+}
+
+defineProps<Props>();
+
+const form = useForm<Form>({
     name: '',
     series_id: '',
     owner_id: '',

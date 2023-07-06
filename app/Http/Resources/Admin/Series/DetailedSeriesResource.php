@@ -13,6 +13,7 @@ class DetailedSeriesResource extends BaseSeriesResource
         return array_merge(parent::toArray($request), [
             'background_colour' => $this->background_colour,
             'text_colour' => $this->text_colour,
+            'style' => $this->style,
         ]);
     }
 }
