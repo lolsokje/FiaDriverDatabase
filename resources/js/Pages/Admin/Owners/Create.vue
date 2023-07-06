@@ -11,10 +11,14 @@
     </form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
 
-const form = useForm({
+interface Form {
+    name: string,
+}
+
+const form = useForm<Form>({
     name: '',
 });
 </script>

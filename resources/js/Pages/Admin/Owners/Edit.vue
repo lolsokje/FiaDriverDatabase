@@ -11,17 +11,21 @@
     </form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
+import BaseOwner from '@/Interfaces/Owners/BaseOwner';
 
-const props = defineProps({
-    owner: {
-        type: Object,
-        required: true,
-    },
-});
+interface Props {
+    owner: BaseOwner,
+}
 
-const form = useForm({
+interface Form {
+    name: string,
+}
+
+const props = defineProps<Props>();
+
+const form = useForm<Form>({
     name: props.owner.name,
 });
 </script>
