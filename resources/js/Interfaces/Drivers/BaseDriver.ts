@@ -4,5 +4,8 @@ export default interface BaseDriver {
     last_name: string,
     full_name: string,
     rating: number,
+    dob: string,
+    date_of_birth: string,
     age: number,
+    team_id: string,
 }

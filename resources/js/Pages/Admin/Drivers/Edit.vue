@@ -6,7 +6,7 @@
             <div class="row">
                 <div class="col-6">
                     <label for="series" class="form-label">Series</label>
-                    <select v-model="form.series_id" id="series" class="form-control" @change="getTeams">
+                    <select v-model="form.series_id" id="series" class="form-control">
                         <option value="">Select a series</option>
                         <option v-for="item in series" :key="item.id" :value="item.id">{{ item.name }}</option>
                     </select>
@@ -55,29 +55,32 @@
     </form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
-import { computed } from 'vue';
+import { computed, ComputedRef } from 'vue';
+import DetailedSeries from '@/Interfaces/Series/DetailedSeries';
+import BaseTeam from '@/Interfaces/Teams/BaseTeam';
+import DetailedDriver from '@/Interfaces/Drivers/DetailedDriver';
 
-const props = defineProps({
-    driver: {
-        type: Object,
-        required: true,
-    },
-    series: {
-        type: Array,
-        required: true,
-    },
-});
+interface Props {
+    driver: DetailedDriver,
+    series: DetailedSeries[],
+}
 
-const teams = computed(() => {
-    if (form.series_id) {
-        return props.series.find((serie) => serie.id === form.series_id).teams;
-    }
-    return [];
-});
+interface Form {
+    series_id: string,
+    team_id: string,
+    first_name: string,
+    last_name: string,
+    dob: string,
+    rating: number,
+}
 
-const form = useForm({
+const props = defineProps<Props>();
+
+const teams: ComputedRef<BaseTeam[]> = computed(() => props.series.find(s => s.id === form.series_id)?.teams ?? []);
+
+const form = useForm<Form>({
     series_id: props.driver.team ? props.driver.team.series_id : '',
     team_id: props.driver.team_id ?? '',
     first_name: props.driver.first_name,
