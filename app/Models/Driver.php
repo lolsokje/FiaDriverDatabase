@@ -2,17 +2,15 @@
 
 namespace App\Models;
 
-use App\Traits\Snowflake;
 use DateTime;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Driver extends Model
+class Driver extends SnowflakeModel
 {
-    use HasFactory, Snowflake;
+    use HasFactory;
 
     protected $appends = [
         'owner',
@@ -23,8 +21,6 @@ class Driver extends Model
     ];
 
     protected $casts = [
-        'id' => 'string',
-        'team_id' => 'string',
         'rating' => 'integer',
         'dob' => 'date:Y-m-d',
     ];
