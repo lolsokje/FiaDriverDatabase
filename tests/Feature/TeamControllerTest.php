@@ -11,8 +11,8 @@ test('an admin can view the teams index page', function () {
     $this->actingAs(createAdminUser())
         ->get(route('admin.teams.index'))
         ->assertOk()
-        ->assertInertia(fn(AssertableInertia $page) => $page
-            ->component('Admin/Teams/Index')
+        ->assertInertia(fn (AssertableInertia $page) => $page
+            ->component('Admin/Teams/Index'),
         );
 });
 
@@ -22,8 +22,8 @@ it('shows the right amount of teams on the teams index page', function () {
     $this->actingAs(createAdminUser())
         ->get(route('admin.teams.index'))
         ->assertOk()
-        ->assertInertia(fn(AssertableInertia $page) => $page
-            ->has('teams', 3)
+        ->assertInertia(fn (AssertableInertia $page) => $page
+            ->has('teams', 3),
         );
 });
 
@@ -39,10 +39,10 @@ test('an admin can view the team create page', function () {
     $this->actingAs(createAdminUser())
         ->get(route('admin.teams.create'))
         ->assertOk()
-        ->assertInertia(fn(AssertableInertia $page) => $page
+        ->assertInertia(fn (AssertableInertia $page) => $page
             ->component('Admin/Teams/Create')
             ->has('series', 3)
-            ->has('owners', 5)
+            ->has('owners', 5),
         );
 });
 
@@ -59,7 +59,7 @@ test('an admin can create a team', function () {
         ->post(route('admin.teams.store'), [
             'series_id' => $series->id,
             'owner_id' => $owner->id,
-            'name' => faker()->company(),
+            'name' => fake()->company(),
         ])
         ->assertRedirect(route('admin.teams.index'));
 
@@ -75,7 +75,7 @@ test('a guest cant create a team', function () {
     $this->post(route('admin.teams.store'), [
         'series_id' => $series->id,
         'owner_id' => $owner->id,
-        'name' => faker()->company(),
+        'name' => fake()->company(),
     ])
         ->assertRedirect(route('index'));
 
@@ -95,11 +95,11 @@ test('an admin can view the team edit page', function () {
     $this->actingAs(createAdminUser())
         ->get(route('admin.teams.edit', [$team]))
         ->assertOk()
-        ->assertInertia(fn(AssertableInertia $page) => $page
+        ->assertInertia(fn (AssertableInertia $page) => $page
             ->component('Admin/Teams/Edit')
             ->has('series', 3)
             ->has('owners', 5)
-            ->has('team')
+            ->has('team'),
         );
 });
 
@@ -117,7 +117,7 @@ test('an admin can update an existing team', function () {
         ->for($owners->first())
         ->create();
 
-    $name = faker()->company();
+    $name = fake()->company();
     $this->actingAs(createAdminUser())
         ->put(route('admin.teams.update', [$team]), [
             'series_id' => $series->last()->id,
@@ -142,7 +142,7 @@ test('a guest cant update an existing team', function () {
         ->create();
 
     $oldName = $team->name;
-    $newName = faker()->company();
+    $newName = fake()->company();
 
     $this->put(route('admin.teams.update', [$team]), [
         'series_id' => $series->last()->id,
@@ -162,7 +162,7 @@ test('the provided series must exist', function () {
         ->post(route('admin.teams.store'), [
             'series_id' => 1,
             'owner_id' => Owner::factory()->create()->id,
-            'name' => faker()->company(),
+            'name' => fake()->company(),
         ])
         ->assertSessionHasErrors(['series_id' => 'The selected series id is invalid.']);
 });
@@ -172,7 +172,7 @@ test('the provided owner must exist', function () {
         ->post(route('admin.teams.store'), [
             'series_id' => Series::factory()->create()->id,
             'owner_id' => 1,
-            'name' => faker()->company(),
+            'name' => fake()->company(),
         ])
         ->assertSessionHasErrors(['owner_id' => 'The selected owner id is invalid.']);
 });

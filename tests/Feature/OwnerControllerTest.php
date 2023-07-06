@@ -9,8 +9,8 @@ test('an admin can view the owner index page', function () {
     $this->actingAs(createAdminUser())
         ->get(route('admin.owners.index'))
         ->assertOk()
-        ->assertInertia(fn(AssertableInertia $page) => $page
-            ->component('Admin/Owners/Index')
+        ->assertInertia(fn (AssertableInertia $page) => $page
+            ->component('Admin/Owners/Index'),
         );
 });
 
@@ -19,8 +19,8 @@ it('shows the right amount of owners on the owner index page', function () {
 
     $this->actingAs(createAdminUser())
         ->get(route('admin.owners.index'))
-        ->assertInertia(fn(AssertableInertia $page) => $page
-            ->has('owners', 3)
+        ->assertInertia(fn (AssertableInertia $page) => $page
+            ->has('owners', 3),
         );
 });
 
@@ -33,8 +33,8 @@ test('an admin can view the owner create page', function () {
     $this->actingAs(createAdminUser())
         ->get(route('admin.owners.create'))
         ->assertOk()
-        ->assertInertia(fn(AssertableInertia $page) => $page
-            ->component('Admin/Owners/Create')
+        ->assertInertia(fn (AssertableInertia $page) => $page
+            ->component('Admin/Owners/Create'),
         );
 });
 
@@ -46,19 +46,21 @@ test('a guest cant view the owner create page', function () {
 test('an admin can create a new owner', function () {
     $this->actingAs(createAdminUser())
         ->followingRedirects()
-        ->post(route('admin.owners.store', [
-            'name' => faker()->userName(),
-        ]))
+        ->post(
+            route('admin.owners.store', [
+                'name' => fake()->userName(),
+            ]),
+        )
         ->assertOk()
-        ->assertInertia(fn(AssertableInertia $page) => $page
+        ->assertInertia(fn (AssertableInertia $page) => $page
             ->component('Admin/Owners/Index')
-            ->has('owners', 1)
+            ->has('owners', 1),
         );
 });
 
 test('a guest cant create a new owner', function () {
     $this->post(route('admin.owners.store'), [
-        'name' => faker()->userName()
+        'name' => fake()->userName(),
     ])
         ->assertRedirect(route('index'));
 
@@ -71,9 +73,9 @@ test('an admin can view the owner edit page', function () {
     $this->actingAs(createAdminUser())
         ->get(route('admin.owners.edit', [$owner]))
         ->assertOk()
-        ->assertInertia(fn(AssertableInertia $page) => $page
+        ->assertInertia(fn (AssertableInertia $page) => $page
             ->component('Admin/Owners/Edit')
-            ->has('owner')
+            ->has('owner'),
         );
 });
 
@@ -86,7 +88,7 @@ test('a guest cant view the owner edit page', function () {
 
 test('an admin can update an existing owner', function () {
     $owner = Owner::factory()->create();
-    $name = faker()->userName();
+    $name = fake()->userName();
 
     $this->actingAs(createAdminUser())
         ->put(route('admin.owners.update', [$owner]), [
@@ -102,7 +104,7 @@ test('a guest cant update an existing owner', function () {
     $name = $owner->name;
 
     $this->put(route('admin.owners.update', [$owner]), [
-        'name' => faker()->userName(),
+        'name' => fake()->userName(),
     ])
         ->assertRedirect(route('index'));
 
@@ -110,7 +112,7 @@ test('a guest cant update an existing owner', function () {
 });
 
 test('an owner name must be unique', function () {
-    $name = faker()->userName();
+    $name = fake()->userName();
     Owner::factory()->create(['name' => $name]);
 
     $this->actingAs(createAdminUser())
@@ -121,24 +123,24 @@ test('an owner name must be unique', function () {
 });
 
 test('an existing owner can be updated and keep the same name', function () {
-    $name = faker()->userName();
+    $name = fake()->userName();
     $owner = Owner::factory()->create(['name' => $name]);
 
     $this->actingAs(createAdminUser())
         ->put(route('admin.owners.update', [$owner]), [
-            'name' => $name
+            'name' => $name,
         ])
         ->assertSessionDoesntHaveErrors(['name']);
 });
 
 test('an existing owner name cant be changed to that of another owner', function () {
-    $name = faker()->userName();
+    $name = fake()->userName();
     Owner::factory()->create(['name' => $name]);
-    $owner = Owner::factory()->create(['name' => faker()->userName()]);
+    $owner = Owner::factory()->create(['name' => fake()->userName()]);
 
     $this->actingAs(createAdminUser())
         ->put(route('admin.owners.update', [$owner]), [
-            'name' => $name
+            'name' => $name,
         ])
         ->assertSessionHasErrors(['name' => 'The name has already been taken.']);
 });

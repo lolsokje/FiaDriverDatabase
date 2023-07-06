@@ -23,24 +23,27 @@ class Driver extends Model
     ];
 
     protected $casts = [
+        'id' => 'string',
+        'team_id' => 'string',
         'rating' => 'integer',
         'dob' => 'date:Y-m-d',
     ];
 
     public function fullName(): Attribute
     {
-        return Attribute::get(fn() => trim("$this->first_name $this->last_name"));
+        return Attribute::get(fn () => trim("$this->first_name $this->last_name"));
     }
 
     public function dateOfBirth(): Attribute
     {
-        return Attribute::get(fn() => $this->dob->format('d/m/Y'));
+        return Attribute::get(fn () => $this->dob->format('d/m/Y'));
     }
 
     public function age(): Attribute
     {
         return Attribute::get(function () {
             $year = resolve('general_settings')->year;
+
             return $this->dob->diff(new DateTime("01-03-$year"))->y;
         });
     }
@@ -52,12 +55,12 @@ class Driver extends Model
 
     public function owner(): Attribute
     {
-        return Attribute::get(fn() => $this->team?->owner);
+        return Attribute::get(fn () => $this->team?->owner);
     }
 
     public function series(): Attribute
     {
-        return Attribute::get(fn() => $this->team?->series);
+        return Attribute::get(fn () => $this->team?->series);
     }
 
     public function scopeWithoutFreeAgents(Builder $query): Builder
@@ -73,14 +76,14 @@ class Driver extends Model
     public function scopeSortedBySeries(Builder $query): array
     {
         return $query
-            ->with(['team' => fn(BelongsTo $relation) => $relation->orderBy('name')])
+            ->with(['team' => fn (BelongsTo $relation) => $relation->orderBy('name'), 'team.series', 'team.owner'])
             ->get()
             ->sort(function ($a, $b) {
-                if (!isset($a['series'])) {
+                if (! isset($a['series'])) {
                     return true;
                 }
 
-                if (!isset($b['series'])) {
+                if (! isset($b['series'])) {
                     return false;
                 }
 

@@ -17,6 +17,12 @@ class Team extends Model
         'updated_at',
     ];
 
+    protected $casts = [
+        'id' => 'string',
+        'series_id' => 'string',
+        'owner_id' => 'string',
+    ];
+
     public function series(): BelongsTo
     {
         return $this->belongsTo(Series::class);
