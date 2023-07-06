@@ -17,7 +17,10 @@ class BaseDriverResource extends UnwrappedJsonResource
             'last_name' => $this->last_name,
             'full_name' => $this->full_name,
             'rating' => $this->rating,
+            'dob' => $this->dob->format('Y-m-d'),
+            'date_of_birth' => $this->date_of_birth,
             'age' => $this->age,
+            'team_id' => $this->team_id,
         ];
     }
 }

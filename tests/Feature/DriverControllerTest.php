@@ -5,31 +5,23 @@ use App\Models\Series;
 use App\Models\Team;
 use Inertia\Testing\AssertableInertia;
 
-use function Pest\Faker\faker;
-
 test('an admin can view the drivers index page', function () {
-    $this->actingAs(createAdminUser())
-        ->get(route('admin.drivers.index'))
-        ->assertOk()
-        ->assertInertia(fn (AssertableInertia $page) => $page
-            ->component('Admin/Drivers/Index'),
-        );
-});
-
-it('shows the right amount of drivers on the teams index page', function () {
-    Driver::factory(3)->create();
+    $team = Team::factory()->create();
+    Driver::factory(3)->for($team)->create();
 
     $this->actingAs(createAdminUser())
         ->get(route('admin.drivers.index'))
         ->assertOk()
         ->assertInertia(fn (AssertableInertia $page) => $page
-            ->has('drivers', 3),
-        );
+            ->component('Admin/Drivers/Index')
+            ->has('drivers', 3, fn (AssertableInertia $prop) => $prop
+                ->where('team_id', $team->id)
+                ->etc()));
 });
 
-test('a guest cant view the drivers index page', function () {
+test('a guest can not view the drivers index page', function () {
     $this->get(route('admin.drivers.index'))
-        ->assertRedirect(route('index'));
+        ->assertRedirectToRoute('index');
 });
 
 test('an admin can view the driver create page', function () {
@@ -49,9 +41,9 @@ test('an admin can view the driver create page', function () {
         );
 });
 
-test('a guest cant view the driver create page', function () {
+test('a guest can not view the driver create page', function () {
     $this->get(route('admin.drivers.create'))
-        ->assertRedirect(route('index'));
+        ->assertRedirectToRoute('index');
 });
 
 test('an admin can create a driver', function () {
@@ -67,11 +59,11 @@ test('an admin can create a driver', function () {
         ])
         ->assertRedirect(route('admin.drivers.index'));
 
-    expect(Driver::all()->count())->toBe(1);
-    expect(count($teams->first()->drivers))->toBe(1);
+    $this->assertCount(1, Driver::all());
+    $this->assertCount(1, $teams->first()->drivers);
 });
 
-test('a guest cant create a driver', function () {
+test('a guest can not create a driver', function () {
     $teams = Team::factory(3)->for(Series::factory()->create())->create();
 
     $this->post(route('admin.drivers.store'), [
@@ -81,10 +73,10 @@ test('a guest cant create a driver', function () {
         'dob' => fake()->date(),
         'rating' => fake()->numberBetween(1, 100),
     ])
-        ->assertRedirect(route('index'));
+        ->assertRedirectToRoute('index');
 
-    expect(Driver::all()->count())->toBe(0);
-    expect(count($teams->first()->drivers))->toBe(0);
+    $this->assertCount(0, Driver::all());
+    $this->assertCount(0, $teams->first()->drivers);
 });
 
 test('an admin can view the driver edit page', function () {
@@ -97,14 +89,16 @@ test('an admin can view the driver edit page', function () {
         ->assertOk()
         ->assertInertia(fn (AssertableInertia $page) => $page
             ->component('Admin/Drivers/Edit')
-            ->has('driver')
+            ->has('driver', fn (AssertableInertia $prop) => $prop
+                ->where('id', $driver->id)
+                ->etc())
             ->has('series', 2),
         );
 });
 
-test('a guest cant view the driver edit page', function () {
+test('a guest can not view the driver edit page', function () {
     $this->get(route('admin.drivers.edit', [Driver::factory()->create()]))
-        ->assertRedirect(route('index'));
+        ->assertRedirectToRoute('index');
 });
 
 test('an admin can update an existing driver', function () {
@@ -130,14 +124,14 @@ test('an admin can update an existing driver', function () {
         ->assertRedirect(route('admin.drivers.index'));
 
     $driver = $driver->fresh();
-    expect($driver->team_id)->toBe($teams->last()->id);
-    expect($driver->first_name)->toBe($firstName);
-    expect($driver->last_name)->toBe($lastName);
-    expect($driver->dob->format('Y-m-d'))->toBe($dob);
-    expect($driver->rating)->toBe($rating);
+    $this->assertEquals($driver->team_id, $teams->last()->id);
+    $this->assertEquals($driver->first_name, $firstName);
+    $this->assertEquals($driver->last_name, $lastName);
+    $this->assertEquals($driver->dob->format('Y-m-d'), $dob);
+    $this->assertEquals($driver->rating, $rating);
 });
 
-test('a guest cant update an existing driver', function () {
+test('a guest can not update an existing driver', function () {
     $series = Series::factory(3)->create();
     $teams = Team::factory(10)->for($series->first())->create();
 
@@ -154,10 +148,10 @@ test('a guest cant update an existing driver', function () {
         'dob' => $driver->dob,
         'rating' => $driver->rating,
     ])
-        ->assertRedirect(route('index'));
+        ->assertRedirectToRoute('index');
 
     $driver = $driver->fresh();
-    expect($driver->first_name)->toBe($oldFirstName);
+    $this->assertEquals($driver->first_name, $oldFirstName);
 });
 
 test('the provided team must exist', function () {
@@ -245,11 +239,11 @@ test('an admin can view the show team page', function () {
         );
 });
 
-test('a guest cant view the team view page', function () {
+test('a guest can not view the team view page', function () {
     $team = Team::factory()->create();
 
     $this->get(route('admin.teams.show', [$team]))
-        ->assertRedirect(route('index'));
+        ->assertRedirectToRoute('index');
 });
 
 it('shows all drivers belonging to a team', function () {
@@ -288,42 +282,42 @@ test('an admin can delete a driver from a team', function () {
         ->delete(route('admin.teams.driver.delete', [$team, $driver]))
         ->assertRedirect(route('admin.teams.show', [$team]));
 
-    expect($team->fresh()->drivers)->toBeEmpty();
+    $this->assertCount(0, $team->fresh()->drivers);
 });
 
-test('a guest cant delete a driver from a team', function () {
+test('a guest can not delete a driver from a team', function () {
     $team = Team::factory()->create();
     $driver = Driver::factory()->for($team)->create();
 
-    expect(count($team->drivers))->toBeOne();
+    $this->assertCount(1, $team->drivers);
 
     $this->delete(route('admin.teams.driver.delete', [$team, $driver]))
-        ->assertRedirect(route('index'));
+        ->assertRedirectToRoute('index');
 
-    expect(count($team->fresh()->drivers))->toBeOne();
+    $this->assertCount(1, $team->fresh()->drivers);
 });
 
 test('an admin can add drivers to a team', function () {
     $team = Team::factory()->create();
     $driver = Driver::factory()->freeAgent()->create();
 
-    expect(count($team->drivers))->toBe(0);
+    $this->assertCount(0, $team->drivers);
 
     $this->actingAs(createAdminUser())
         ->put(route('admin.teams.driver.add', [$team, $driver]))
         ->assertRedirect(route('admin.teams.show', [$team]));
 
-    expect(count($team->fresh()->drivers))->toBeOne();
+    $this->assertCount(1, $team->fresh()->drivers);
 });
 
-test('a guest cant add drivers to a team', function () {
+test('a guest can not add drivers to a team', function () {
     $team = Team::factory()->create();
     $driver = Driver::factory()->freeAgent()->create();
 
-    expect(count($team->drivers))->toBe(0);
+    $this->assertCount(0, $team->drivers);
 
     $this->put(route('admin.teams.driver.add', [$team, $driver]))
-        ->assertRedirect(route('index'));
+        ->assertRedirectToRoute('index');
 
-    expect(count($team->fresh()->drivers))->toBe(0);
+    $this->assertCount(0, $team->fresh()->drivers);
 });
