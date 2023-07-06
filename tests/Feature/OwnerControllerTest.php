@@ -6,27 +6,25 @@ use Inertia\Testing\AssertableInertia;
 use function Pest\Faker\faker;
 
 test('an admin can view the owner index page', function () {
+    Owner::factory(3)->create();
+
+    $owner = Owner::query()->orderBy('name')->first();
+
     $this->actingAs(createAdminUser())
         ->get(route('admin.owners.index'))
         ->assertOk()
         ->assertInertia(fn (AssertableInertia $page) => $page
-            ->component('Admin/Owners/Index'),
+            ->component('Admin/Owners/Index')
+            ->has('owners', 3, fn (AssertableInertia $prop) => $prop
+                ->where('id', $owner->id)
+                ->where('name', $owner->name)
+                ->etc()),
         );
 });
 
-it('shows the right amount of owners on the owner index page', function () {
-    Owner::factory(3)->create();
-
-    $this->actingAs(createAdminUser())
-        ->get(route('admin.owners.index'))
-        ->assertInertia(fn (AssertableInertia $page) => $page
-            ->has('owners', 3),
-        );
-});
-
-test('a guest cant view the owner index page', function () {
+test('a guest can not view the owner index page', function () {
     $this->get(route('admin.owners.index'))
-        ->assertRedirect(route('index'));
+        ->assertRedirectToRoute('index');
 });
 
 test('an admin can view the owner create page', function () {
@@ -38,19 +36,15 @@ test('an admin can view the owner create page', function () {
         );
 });
 
-test('a guest cant view the owner create page', function () {
+test('a guest can not view the owner create page', function () {
     $this->get(route('admin.owners.create'))
-        ->assertRedirect(route('index'));
+        ->assertRedirectToRoute('index');
 });
 
 test('an admin can create a new owner', function () {
     $this->actingAs(createAdminUser())
         ->followingRedirects()
-        ->post(
-            route('admin.owners.store', [
-                'name' => fake()->userName(),
-            ]),
-        )
+        ->post(route('admin.owners.store', ['name' => fake()->userName()]))
         ->assertOk()
         ->assertInertia(fn (AssertableInertia $page) => $page
             ->component('Admin/Owners/Index')
@@ -58,11 +52,11 @@ test('an admin can create a new owner', function () {
         );
 });
 
-test('a guest cant create a new owner', function () {
+test('a guest can not create a new owner', function () {
     $this->post(route('admin.owners.store'), [
         'name' => fake()->userName(),
     ])
-        ->assertRedirect(route('index'));
+        ->assertRedirectToRoute('index');
 
     $this->assertDatabaseCount('owners', 0);
 });
@@ -75,15 +69,18 @@ test('an admin can view the owner edit page', function () {
         ->assertOk()
         ->assertInertia(fn (AssertableInertia $page) => $page
             ->component('Admin/Owners/Edit')
-            ->has('owner'),
+            ->has('owner', fn (AssertableInertia $prop) => $prop
+                ->where('id', $owner->id)
+                ->where('name', $owner->name)
+                ->etc()),
         );
 });
 
-test('a guest cant view the owner edit page', function () {
+test('a guest can not view the owner edit page', function () {
     $owner = Owner::factory()->create();
 
     $this->get(route('admin.owners.edit', [$owner]))
-        ->assertRedirect(route('index'));
+        ->assertRedirectToRoute('index');
 });
 
 test('an admin can update an existing owner', function () {
@@ -96,19 +93,19 @@ test('an admin can update an existing owner', function () {
         ])
         ->assertRedirect(route('admin.owners.index'));
 
-    expect($owner->fresh()->name)->toBe($name);
+    $this->assertEquals($name, $owner->fresh()->name);
 });
 
-test('a guest cant update an existing owner', function () {
+test('a guest can not update an existing owner', function () {
     $owner = Owner::factory()->create();
     $name = $owner->name;
 
     $this->put(route('admin.owners.update', [$owner]), [
         'name' => fake()->userName(),
     ])
-        ->assertRedirect(route('index'));
+        ->assertRedirectToRoute('index');
 
-    expect($owner->fresh()->name)->toBe($name);
+    $this->assertEquals($name, $owner->fresh()->name);
 });
 
 test('an owner name must be unique', function () {
@@ -122,7 +119,7 @@ test('an owner name must be unique', function () {
         ->assertSessionHasErrors(['name' => 'The name has already been taken.']);
 });
 
-test('an existing owner can be updated and keep the same name', function () {
+it('ignores the current owner when checking name uniqueness', function () {
     $name = fake()->userName();
     $owner = Owner::factory()->create(['name' => $name]);
 
@@ -133,7 +130,7 @@ test('an existing owner can be updated and keep the same name', function () {
         ->assertSessionDoesntHaveErrors(['name']);
 });
 
-test('an existing owner name cant be changed to that of another owner', function () {
+test('owner names must be unique when updating an owner', function () {
     $name = fake()->userName();
     Owner::factory()->create(['name' => $name]);
     $owner = Owner::factory()->create(['name' => fake()->userName()]);

@@ -26,7 +26,7 @@ Route::group(['prefix' => config('app.admin_panel_url'), 'as' => 'admin.'], func
         Route::get('', [AdminController::class, 'index'])->name('index');
 
         Route::resource('series', SeriesController::class)->except('show', 'destroy');
-        Route::resource('owners', OwnerController::class)->except('destroy');
+        Route::resource('owners', OwnerController::class)->except('show', 'destroy');
         Route::resource('teams', TeamController::class)->except('destroy');
         Route::resource('drivers', DriverController::class)->except('destroy');
 

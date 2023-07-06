@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\OwnerCreateRequest;
 use App\Http\Requests\OwnerUpdateRequest;
+use App\Http\Resources\Admin\Owners\BaseOwnerResource;
 use App\Models\Owner;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -19,7 +20,7 @@ class OwnerController extends Controller
     public function index(): Response
     {
         return Inertia::render('Admin/Owners/Index', [
-            'owners' => Owner::query()->orderBy('name')->get(),
+            'owners' => BaseOwnerResource::collection(Owner::query()->orderBy('name')->get()),
         ]);
     }
 
@@ -32,20 +33,13 @@ class OwnerController extends Controller
     {
         Owner::create($request->validated());
 
-        return redirect(route('admin.owners.index'));
-    }
-
-    public function show(Owner $owner): Response
-    {
-        return Inertia::render('Admin/Series/View', [
-            'owner' => $owner,
-        ]);
+        return to_route('admin.owners.index');
     }
 
     public function edit(Owner $owner): Response
     {
         return Inertia::render('Admin/Owners/Edit', [
-            'owner' => $owner,
+            'owner' => new BaseOwnerResource($owner),
         ]);
     }
 
@@ -53,6 +47,6 @@ class OwnerController extends Controller
     {
         $owner->update($request->validated());
 
-        return redirect(route('admin.owners.index'));
+        return to_route('admin.owners.index');
     }
 }
