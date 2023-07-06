@@ -6,6 +6,7 @@ use App\Settings\GeneralSettings;
 use Godruoyi\Snowflake\RandomSequenceResolver;
 use Godruoyi\Snowflake\Snowflake;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -20,14 +21,15 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton('snowflake', function () {
             return (new Snowflake(
                 config('snowflake.data_center'),
-                config('snowflake.worker_node'))
+                config('snowflake.worker_node')
+            )
             )
                 ->setStartTimeStamp(strtotime('2022-01-25') * 1000)
-                ->setSequenceResolver(new RandomSequenceResolver());
+                ->setSequenceResolver(new RandomSequenceResolver);
         });
 
         $this->app->singleton('general_settings', function () {
-            return (new GeneralSettings());
+            return (new GeneralSettings);
         });
     }
 
@@ -39,5 +41,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Model::unguard();
+
+        JsonResource::withoutWrapping();
     }
 }

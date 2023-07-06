@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SeriesCreateRequest;
 use App\Http\Requests\SeriesUpdateRequest;
+use App\Http\Resources\Admin\SeriesResource;
 use App\Models\Series;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
@@ -19,14 +20,7 @@ class SeriesController extends Controller
     public function index(): Response
     {
         return Inertia::render('Admin/Series/Index', [
-            'series' => Series::all(),
-        ]);
-    }
-
-    public function show(Series $series): Response
-    {
-        return Inertia::render('Admin/Series/View', [
-            'series' => $series,
+            'series' => SeriesResource::collection(Series::all()),
         ]);
     }
 
@@ -39,13 +33,13 @@ class SeriesController extends Controller
     {
         Series::create($request->validated());
 
-        return redirect(route('admin.series.index'));
+        return to_route('admin.series.index');
     }
 
     public function edit(Series $series): Response
     {
         return Inertia::render('Admin/Series/Edit', [
-            'series' => $series,
+            'series' => new SeriesResource($series),
         ]);
     }
 
@@ -53,6 +47,6 @@ class SeriesController extends Controller
     {
         $series->update($request->validated());
 
-        return redirect(route('admin.series.index'));
+        return to_route('admin.series.index');
     }
 }
