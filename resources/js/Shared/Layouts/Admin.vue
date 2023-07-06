@@ -1,14 +1,14 @@
 <template>
-	<AdminNav/>
+    <AdminNav/>
 
-	<div class="container">
-		<slot/>
-	</div>
+    <div class="container">
+        <slot/>
+    </div>
 </template>
 
 <script setup>
-
-import AdminNav from '../AdminNav';</script>
+import AdminNav from '@/Shared/AdminNav.vue';
+</script>
 
 <script>
 export default { name: 'Admin' };

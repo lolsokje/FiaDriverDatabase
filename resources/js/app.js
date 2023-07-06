@@ -1,16 +1,21 @@
 import { createApp, h } from 'vue';
 import { createInertiaApp, Link } from '@inertiajs/inertia-vue3';
-import route from 'ziggy';
-import Main from './Shared/Layouts/Main';
-import Admin from './Shared/Layouts/Admin';
+import route from 'ziggy-js';
+import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import Admin from '@/Shared/Layouts/Admin.vue';
+import Main from '@/Shared/Layouts/Main.vue';
 
 createInertiaApp({
     resolve: name => {
-        let page = require(`./Pages/${name}`).default;
+        const page = resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue'));
 
-        if (page.layout === undefined) {
-            page.layout = name.includes('Admin') ? Admin : Main;
-        }
+        page.then(module => {
+            if (name.includes('Admin')) {
+                module.default.layout = Admin;
+            } else {
+                module.default.layout = Main;
+            }
+        });
 
         return page;
     },
