@@ -1,5 +1,5 @@
 import { createApp, h } from 'vue';
-import { createInertiaApp, Link } from '@inertiajs/inertia-vue3';
+import { createInertiaApp, Link } from '@inertiajs/vue3';
 import route from 'ziggy-js';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import Admin from '@/Shared/Layouts/Admin.vue';
