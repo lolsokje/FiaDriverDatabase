@@ -35,13 +35,6 @@ class DriverController extends Controller
         return to_route('admin.drivers.index');
     }
 
-    public function show(Driver $driver): Response
-    {
-        return Inertia::render('Admin/Drivers/View', [
-            'driver' => $driver,
-        ]);
-    }
-
     public function edit(Driver $driver): Response
     {
         return Inertia::render('Admin/Drivers/Edit', [

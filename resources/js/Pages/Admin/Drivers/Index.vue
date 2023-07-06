@@ -12,7 +12,7 @@
             <th class="text-center">Series</th>
             <th class="text-center">DOB</th>
             <th class="text-center">Rating</th>
-            <th colspan="2"></th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -26,9 +26,6 @@
             <td class="centered small">
                 <InertiaLink :href="route('admin.drivers.edit', [driver])">edit</InertiaLink>
             </td>
-            <td class="centered small">
-                <InertiaLink :href="route('admin.drivers.show', [driver])">view</InertiaLink>
-            </td>
         </tr>
         <tr v-for="freeAgent in freeAgents" :key="freeAgent.id">
             <td>{{ freeAgent.full_name }}</td>
@@ -39,9 +36,6 @@
             <td class="centered medium">{{ freeAgent.rating }}</td>
             <td class="centered small">
                 <InertiaLink :href="route('admin.drivers.edit', [freeAgent])">edit</InertiaLink>
-            </td>
-            <td class="centered small">
-                <InertiaLink :href="route('admin.drivers.show', [freeAgent])">view</InertiaLink>
             </td>
         </tr>
         </tbody>
