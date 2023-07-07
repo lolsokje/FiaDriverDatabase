@@ -1,0 +1,33 @@
+.form-label {
+  font-family: $fontFamilyMain;
+  display: inline-block;
+  width: 100%;
+  margin-bottom: .5rem;
+}
+
+.form-label-inline {
+  font-family: $fontFamilyMain;
+  display: inline-block;
+}
+
+select {
+  border: 0;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select {
+  font-family: $fontFamilyMain;
+  width: 100%;
+  padding: 0.75rem 0.5rem;
+  font-size: 16px;
+  border-radius: 5px;
+  background-color: #3A3A41;
+  color: $white;
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.125rem $primary;
+  }
+}

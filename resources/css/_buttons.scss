@@ -1,0 +1,27 @@
+.btn {
+  font-family: $fontFamilyBody;
+  letter-spacing: .5px;
+  line-height: 1.15;
+  text-transform: uppercase;
+  font-size: 13px;
+  display: inline-block;
+  border-radius: .25rem;
+  padding: 11px 14px 10px;
+  text-decoration: none;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &.btn-primary {
+    background-color: $primary;
+    color: $white;
+    transition: all 0.25s ease-out;
+
+    &:hover {
+      background-color: $white;
+      box-shadow: 0 0 0 2px $primary inset;
+      color: #000000;
+    }
+  }
+}

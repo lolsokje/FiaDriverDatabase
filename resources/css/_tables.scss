@@ -1,0 +1,98 @@
+.table {
+  white-space: nowrap;
+  width: 100%;
+  border-collapse: collapse;
+  border: none;
+
+  thead {
+    tr {
+      background-color: $primary;
+
+      th {
+        padding: 1.5rem 1rem;
+        font-family: $fontFamilyMain;
+        text-align: left;
+
+        &.text-center {
+          text-align: center;
+        }
+      }
+    }
+  }
+
+  tbody {
+    tr {
+      border-top: 2px solid black;
+
+      &:first-child {
+        border-top: none;
+      }
+
+      &:hover {
+        cursor: pointer;
+
+        td {
+          background-color: #3A3A41;
+        }
+      }
+
+      td {
+        border: none !important;
+        padding: 1.5rem 1rem;
+        background-color: #1F1F27;
+        font-family: $fontFamilyMain;
+
+        &.driver-name {
+          span {
+            font-family: $fontFamilyMain;
+
+            &.first-name {
+              color: #DDDDDD;
+            }
+
+            &.last-name {
+              text-transform: uppercase;
+              font-weight: bolder;
+            }
+          }
+        }
+
+        a {
+          color: $primary;
+          text-decoration: none;
+          font-family: $fontFamilyMain;
+          transition: color 0.25s ease-out;
+
+          &:hover {
+            color: $white;
+          }
+        }
+
+        .series-style {
+          font-family: $fontFamilyMain;
+          display: inline-block;
+          width: 85px;
+          padding: 10px 0;
+          border-radius: 5px;
+          font-size: 0.8rem;
+        }
+      }
+    }
+  }
+
+  .centered {
+    text-align: center;
+
+    &.small {
+      width: 90px;
+    }
+
+    &.medium {
+      width: 120px;
+    }
+
+    &.large {
+      width: 150px;
+    }
+  }
+}
