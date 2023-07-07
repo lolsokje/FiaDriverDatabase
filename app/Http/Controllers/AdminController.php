@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -12,9 +13,9 @@ class AdminController extends Controller
         $this->middleware('auth')->except('login');
     }
 
-    public function index(): Response
+    public function index(): RedirectResponse
     {
-        return Inertia::render('Admin/Index');
+        return to_route('admin.drivers.index');
     }
 
     public function login(): Response
