@@ -1,31 +1,38 @@
 <template>
-	<nav class="navbar navbar-expand-lg bg-dark">
-		<div class="container">
-			<ul class="navbar-nav">
-				<li class="nav-item">
-					<InertiaLink :href="route('admin.series.index')" class="nav-link">Series</InertiaLink>
-				</li>
-				<li class="nav-item">
-					<InertiaLink :href="route('admin.owners.index')" class="nav-link">Owners</InertiaLink>
-				</li>
-				<li class="nav-item">
-					<InertiaLink :href="route('admin.teams.index')" class="nav-link">Teams</InertiaLink>
-				</li>
-				<li class="nav-item">
-					<InertiaLink :href="route('admin.drivers.index')" class="nav-link">Drivers</InertiaLink>
-				</li>
-				<li class="nav-item">
-					<InertiaLink :href="route('admin.settings.show')" class="nav-link">Settings</InertiaLink>
-				</li>
-			</ul>
-		</div>
-	</nav>
+    <nav class="main-nav">
+        <div class="links">
+            <InertiaLink :href="route('admin.series.index')" :class="{ 'active': isActive('series') }">
+                <span>Series</span>
+            </InertiaLink>
+            <InertiaLink :href="route('admin.owners.index')" :class="{ 'active': isActive('owners') }">
+                <span>Owners</span>
+            </InertiaLink>
+            <InertiaLink :href="route('admin.teams.index')" :class="{ 'active': isActive('teams') }">
+                <span>Teams</span>
+            </InertiaLink>
+            <InertiaLink :href="route('admin.drivers.index')" :class="{ 'active': isActive('drivers') }">
+                <span>Drivers</span>
+            </InertiaLink>
+            <InertiaLink :href="route('admin.settings.show')" :class="{ 'active': isActive('settings') }">
+                <span>Settings</span>
+            </InertiaLink>
+        </div>
+    </nav>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { usePage } from '@inertiajs/vue3';
+import { computed, ComputedRef } from 'vue';
 
+const page = usePage();
+
+const currentRoute: ComputedRef<string> = computed(() => page.props.activeRoute as string);
+
+const isActive = (routeToCheck: string): boolean => {
+    return currentRoute.value.includes(routeToCheck);
+};
 </script>
 
-<script>
+<script lang="ts">
 export default { name: 'AdminNav' };
 </script>

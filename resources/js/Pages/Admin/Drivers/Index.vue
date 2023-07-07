@@ -1,9 +1,9 @@
 <template>
-    <h2>Drivers</h2>
+    <h1>Drivers</h1>
 
-    <InertiaLink :href="route('admin.drivers.create')" class="btn btn-primary my-3">Add driver</InertiaLink>
+    <InertiaLink :href="route('admin.drivers.create')" class="btn btn-primary m-y-4">Add driver</InertiaLink>
 
-    <table class="table table-bordered table-dark">
+    <table class="table">
         <thead>
         <tr>
             <th>Name</th>
@@ -17,10 +17,12 @@
         </thead>
         <tbody>
         <tr v-for="driver in drivers" :key="driver.id">
-            <td>{{ driver.full_name }}</td>
+            <DriverName :driver="driver"/>
             <td>{{ driver.team.name }}</td>
             <td>{{ driver.owner.name }}</td>
-            <td class="centered medium" :style="driver.series.style">{{ driver.series.name }}</td>
+            <td class="centered medium">
+                <SeriesStyle :team="driver.team"/>
+            </td>
             <td class="centered medium">{{ driver.date_of_birth }}</td>
             <td class="centered medium">{{ driver.rating }}</td>
             <td class="centered small">
@@ -44,6 +46,8 @@
 
 <script setup lang="ts">
 import DetailedDriver from '@/Interfaces/Drivers/DetailedDriver';
+import SeriesStyle from '@/Components/SeriesStyle.vue';
+import DriverName from '@/Components/DriverName.vue';
 
 interface Props {
     drivers: DetailedDriver[],

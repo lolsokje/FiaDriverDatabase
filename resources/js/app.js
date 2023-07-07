@@ -4,6 +4,7 @@ import route from 'ziggy-js';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import Admin from '@/Shared/Layouts/Admin.vue';
 import Main from '@/Shared/Layouts/Main.vue';
+import '../css/app.scss';
 
 createInertiaApp({
     resolve: name => {

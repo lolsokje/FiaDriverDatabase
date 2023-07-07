@@ -1,22 +1,22 @@
 <template>
-    <h2>General settings</h2>
+    <h1>General settings</h1>
 
-    <table class="table table-bordered table-dark">
+    <table class="table m-t-5">
         <thead>
         <tr>
             <th>Setting</th>
-            <th>Value</th>
+            <th class="centered">Value</th>
             <th></th>
         </tr>
         </thead>
         <tbody>
         <tr>
             <td>Year</td>
-            <td class="centered medium">
-                <input type="number" v-model="settings.year" class="form-control-sm">
+            <td class="centered large">
+                <input type="number" v-model="settings.year">
             </td>
-            <td class="centered medium">
-                <button class="btn btn-primary btn-sm" @click="saveSetting('year')">Save</button>
+            <td class="centered small">
+                <button class="btn btn-primary" @click="saveSetting('year')">Save</button>
             </td>
         </tr>
         </tbody>

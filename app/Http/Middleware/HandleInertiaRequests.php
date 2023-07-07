@@ -20,7 +20,7 @@ class HandleInertiaRequests extends Middleware
      *
      * @see https://inertiajs.com/asset-versioning
      *
-     * @param  Request  $request
+     * @param Request $request
      *
      * @return string|null
      */
@@ -34,14 +34,14 @@ class HandleInertiaRequests extends Middleware
      *
      * @see https://inertiajs.com/shared-data
      *
-     * @param  Request  $request
+     * @param Request $request
      *
      * @return array
      */
     public function share(Request $request): array
     {
         return array_merge(parent::share($request), [
-            //
+            'activeRoute' => $request->route()->getName(),
         ]);
     }
 }

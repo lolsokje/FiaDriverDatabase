@@ -1,9 +1,9 @@
 <template>
-    <h2>Owners</h2>
+    <h1>Owners</h1>
 
-    <InertiaLink :href="route('admin.owners.create')" class="btn btn-primary my-3">Add owner</InertiaLink>
+    <InertiaLink :href="route('admin.owners.create')" class="btn btn-primary m-y-4">Add owner</InertiaLink>
 
-    <table class="table table-bordered table-dark">
+    <table class="table">
         <thead>
         <tr>
             <th>Name</th>

@@ -1,9 +1,9 @@
 <template>
-    <h2>Series</h2>
+    <h1>Series</h1>
 
-    <InertiaLink :href="route('admin.series.create')" class="btn btn-primary my-3">Add series</InertiaLink>
+    <InertiaLink :href="route('admin.series.create')" class="btn btn-primary m-y-4">Add series</InertiaLink>
 
-    <table class="table table-bordered table-dark">
+    <table class="table">
         <thead>
         <tr>
             <th>Name</th>
@@ -22,10 +22,10 @@
 </template>
 
 <script setup lang="ts">
-import Series from '@/Interfaces/Series';
+import BaseSeries from '@/Interfaces/Series/BaseSeries';
 
 interface Props {
-    series: Series[],
+    series: BaseSeries[],
 }
 
 defineProps<Props>();

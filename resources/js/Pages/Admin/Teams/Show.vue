@@ -1,42 +1,37 @@
 <template>
-    <h2>{{ team.name }}</h2>
-    <p>Owned by {{ team.owner.name }}</p>
+    <h1>{{ team.name }}</h1>
+    <h4>Owned by {{ team.owner.name }}</h4>
 
-    <div class="mb-3 d-inline-flex justify-content-between w-100">
+    <div class="m-y-4">
         <div>
-            <input type="checkbox" id="edit-mode" v-model="editMode" class="form-check-inline">
-            <label for="edit-mode" class="form-check-label">Edit ratings</label>
+            <input type="checkbox" id="edit-mode" v-model="editMode">
+            <label for="edit-mode" class="form-label-inline m-l-3">Edit ratings</label>
         </div>
 
         <div v-if="editMode">
-            <button type="button" class="btn btn-primary btn-sm" @click.prevent="saveDriverRatings">
+            <button type="button" class="btn btn-primary m-t-3" @click.prevent="saveDriverRatings">
                 Save ratings
             </button>
         </div>
     </div>
-    <table class="table table-bordered table-dark">
+    <table class="table">
         <thead>
         <tr>
             <th>Driver name</th>
             <th class="centered">Rating</th>
-            <th class="centered medium" v-if="editMode">Edit rating</th>
+            <th class="centered large" v-if="editMode">Edit rating</th>
             <th class="centered">Age</th>
-            <th colspan="2"></th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="driver in drivers" :key="driver.id">
             <td>{{ driver.full_name }}</td>
             <td class="centered small">{{ driver.rating }}</td>
-            <td class="centered small" v-if="editMode">
-                <input type="number" class="form-control-sm text-center" v-model="driver.rating">
+            <td class="centered large" v-if="editMode">
+                <input type="number" v-model="driver.rating">
             </td>
             <td class="centered small">{{ driver.age }}</td>
-            <td class="centered small">
-                <InertiaLink :href="route('admin.drivers.show', [driver])">
-                    view
-                </InertiaLink>
-            </td>
             <td class="centered small">
                 <a @click.prevent="deleteDriver(driver)" class="text-primary" role="button">delete</a>
             </td>
@@ -44,10 +39,10 @@
         </tbody>
     </table>
 
-    <div class="mt-3">
-        <div class="mb-3 col-3">
+    <div class="m-t-4">
+        <div class="m-b-4">
             <label for="driver" class="form-label">Add a driver</label>
-            <select id="driver" class="form-control col-6" v-model="driver">
+            <select id="driver" v-model="driver">
                 <option value="">Select a driver</option>
                 <option v-for="driver in allDrivers" :key="driver.id" :value="driver.id">{{ driver.full_name }}</option>
             </select>

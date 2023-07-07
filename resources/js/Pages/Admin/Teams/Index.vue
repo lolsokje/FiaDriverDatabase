@@ -1,18 +1,18 @@
 <template>
-    <h2>Teams</h2>
+    <h1>Teams</h1>
 
-    <InertiaLink :href="route('admin.teams.create')" class="btn btn-primary my-3">Add team</InertiaLink>
+    <InertiaLink :href="route('admin.teams.create')" class="btn btn-primary m-y-4">Add team</InertiaLink>
 
-    <div class="row col-6">
-        <div class="col-6">
-            <select v-model="filters.owner" class="form-control mb-3" @change.prevent="filterTeams">
+    <div class="grid grid-cols-2 gap-1 m-b-4">
+        <div>
+            <select v-model="filters.owner" @change.prevent="filterTeams">
                 <option value="">Filter by owner</option>
                 <option v-for="owner in owners" :key="owner.id" :value="owner.id">{{ owner.name }}</option>
             </select>
         </div>
 
-        <div class="col-6">
-            <select v-model="filters.series" class="form-control mb-3" @change.prevent="filterTeams">
+        <div>
+            <select v-model="filters.series" @change.prevent="filterTeams">
                 <option value="">Filter by series</option>
                 <option v-for="championship in series" :key="championship.id" :value="championship.id">
                     {{ championship.name }}
@@ -21,7 +21,7 @@
         </div>
     </div>
 
-    <table class="table table-bordered table-dark">
+    <table class="table">
         <thead>
         <tr>
             <th>Name</th>
@@ -34,7 +34,9 @@
         <tr v-for="team in filteredTeams" :key="team.id">
             <td>{{ team.name }}</td>
             <td>{{ team.owner.name }}</td>
-            <td :style="team.series.style" class="centered medium">{{ team.series.name }}</td>
+            <td class="centered medium">
+                <SeriesStyle :team="team"/>
+            </td>
             <td class="centered small">
                 <InertiaLink :href="route('admin.teams.edit', [team])">edit</InertiaLink>
             </td>
@@ -51,6 +53,7 @@ import { reactive, Ref, ref } from 'vue';
 import BaseOwner from '@/Interfaces/Owners/BaseOwner';
 import DetailedTeam from '@/Interfaces/Teams/DetailedTeam';
 import DetailedSeries from '@/Interfaces/Series/DetailedSeries';
+import SeriesStyle from '@/Components/SeriesStyle.vue';
 
 interface Props {
     teams: DetailedTeam[],

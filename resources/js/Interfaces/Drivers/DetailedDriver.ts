@@ -6,5 +6,5 @@ import DetailedTeam from '@/Interfaces/Teams/DetailedTeam';
 export default interface DetailedDriver extends BaseDriver {
     owner: BaseOwner,
     series: DetailedSeries,
-    team: DetailedTeam,
+    team: DetailedTeam | null,
 }

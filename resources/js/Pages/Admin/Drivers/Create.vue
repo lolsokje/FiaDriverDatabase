@@ -1,51 +1,45 @@
 <template>
-    <h2>Add driver</h2>
+    <h1>Add driver</h1>
 
-    <form @submit.prevent="form.post(route('admin.drivers.store'))">
-        <div class="md-3">
-            <div class="row">
-                <div class="col-6">
-                    <label for="series" class="form-label">Series</label>
-                    <select v-model="form.series_id" id="series" class="form-control">
-                        <option v-for="item in series" :key="item.id" :value="item.id">{{ item.name }}</option>
-                    </select>
-                </div>
+    <form @submit.prevent="form.post(route('admin.drivers.store'))" class="m-t-5">
+        <div class="m-b-4 grid grid-cols-2 gap-1">
+            <div>
+                <label for="series" class="form-label">Series</label>
+                <select v-model="form.series_id" id="series">
+                    <option v-for="item in series" :key="item.id" :value="item.id">{{ item.name }}</option>
+                </select>
+            </div>
 
-                <div class="col-6">
-                    <label for="team" class="form-label">Team (leave blank for free agent)</label>
-                    <select v-model="form.team_id" id="team" class="form-control">
-                        <option value="">Select a team</option>
-                        <option v-for="team in teams" :key="team.id" :value="team.id">{{ team.name }}</option>
-                    </select>
-                </div>
+            <div>
+                <label for="team" class="form-label">Team (leave blank for free agent)</label>
+                <select v-model="form.team_id" id="team">
+                    <option value="">Select a team</option>
+                    <option v-for="team in teams" :key="team.id" :value="team.id">{{ team.name }}</option>
+                </select>
             </div>
         </div>
 
-        <div class="mb-3">
-            <div class="row">
-                <div class="col-6">
-                    <label for="first_name" class="form-label">First name</label>
-                    <input type="text" id="first_name" v-model="form.first_name" class="form-control" required>
-                </div>
+        <div class="m-b-4 grid grid-cols-2 gap-1">
+            <div>
+                <label for="first_name" class="form-label">First name</label>
+                <input type="text" id="first_name" v-model="form.first_name" required>
+            </div>
 
-                <div class="col-6">
-                    <label for="last_name" class="form-label">Last name</label>
-                    <input type="text" id="last_name" v-model="form.last_name" class="form-control" required>
-                </div>
+            <div>
+                <label for="last_name" class="form-label">Last name</label>
+                <input type="text" id="last_name" v-model="form.last_name" required>
             </div>
         </div>
 
-        <div class="mb-3">
-            <div class="row">
-                <div class="col-6">
-                    <label for="dob" class="form-label">Date of birth</label>
-                    <input type="date" id="dob" v-model="form.dob" class="form-control" required>
-                </div>
+        <div class="m-b-4 grid grid-cols-2 gap-1">
+            <div>
+                <label for="dob" class="form-label">Date of birth</label>
+                <input type="date" id="dob" v-model="form.dob" required>
+            </div>
 
-                <div class="col-6">
-                    <label for="rating" class="form-label">Rating</label>
-                    <input type="number" id="rating" v-model="form.rating" class="form-control" min="0" required>
-                </div>
+            <div>
+                <label for="rating" class="form-label">Rating</label>
+                <input type="number" id="rating" v-model="form.rating" min="0" required>
             </div>
         </div>
 

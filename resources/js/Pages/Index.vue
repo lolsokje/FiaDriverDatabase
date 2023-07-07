@@ -1,173 +1,159 @@
 <template>
-	<h2>Drivers - {{ year }}</h2>
+    <h1 class="m-t-6 m-b-4">Drivers - {{ year }}</h1>
 
-	<div class="row mt-3">
-		<div class="col-3">
-			<div class="form-floating mb-3">
-				<input type="text" class="form-control" id="name" v-model="filters.name">
-				<label for="name">Name</label>
-			</div>
-		</div>
+    <div class="filter-wrapper m-b-4">
+        <div>
+            <label for="name" class="form-label">Name</label>
+            <input type="text" id="name" v-model="filters.name">
+        </div>
 
-		<div class="col-3">
-			<div class="form-floating mb-3">
-				<select class="form-select" id="series" v-model="filters.series">
-					<option value="">Select a series</option>
-					<option v-for="item in series" :key="item.id" :value="item.id">{{ item.name }}</option>
-					<option value="fa">Free Agent</option>
-				</select>
-				<label for="series">Series</label>
-			</div>
-		</div>
+        <div>
+            <label for="series" class="form-label">Series</label>
+            <select class="form-select" id="series" v-model="filters.series">
+                <option value="">Select a series</option>
+                <option v-for="item in series" :key="item.id" :value="item.id">{{ item.name }}</option>
+                <option value="fa">Free Agent</option>
+            </select>
+        </div>
 
-		<div class="col-3 row">
-			<div class="col-6">
-				<div class="form-floating mb-3">
-					<input type="text" class="form-control" id="min_age" v-model="filters.min_age">
-					<label for="series">Min Age</label>
-				</div>
-			</div>
-			<div class="col-6">
-				<div class="form-floating mb-3">
-					<input type="text" class="form-control" id="max_age" v-model="filters.max_age">
-					<label for="series">Max Age</label>
-				</div>
-			</div>
-		</div>
+        <div>
+            <label for="series" class="form-label">Min Age</label>
+            <input type="text" id="min_age" v-model="filters.min_age">
+        </div>
+        <div>
+            <label for="series" class="form-label">Max Age</label>
+            <input type="text" id="max_age" v-model="filters.max_age">
+        </div>
 
-		<div class="col-3 row">
-			<div class="col-6">
-				<div class="form-floating mb-3">
-					<input type="text" class="form-control" id="min_rating" v-model="filters.min_rating">
-					<label for="series">Min Rating</label>
-				</div>
-			</div>
-			<div class="col-6">
-				<div class="form-floating mb-3">
-					<input type="text" class="form-control" id="max_rating" v-model="filters.max_rating">
-					<label for="series">Max Rating</label>
-				</div>
-			</div>
-		</div>
-	</div>
+        <div>
+            <label for="series" class="form-label">Min Rating</label>
+            <input type="text" id="min_rating" v-model="filters.min_rating">
+        </div>
+        <div>
+            <label for="series" class="form-label">Max Rating</label>
+            <input type="text" id="max_rating" v-model="filters.max_rating">
+        </div>
+    </div>
 
-	<p>{{ filteredDrivers.length }} of {{ drivers.length }} drivers shown</p>
+    <p class="m-b-4">{{ filteredDrivers.length }} of {{ drivers.length }} drivers shown</p>
 
-	<table class="table table-bordered table-dark">
-		<thead>
-		<tr>
-			<th>Name</th>
-			<th>Team</th>
-			<th>Owner</th>
-			<th class="text-center">Series</th>
-			<th class="text-center">DOB</th>
-			<th class="text-center">Age</th>
-			<th class="text-center">Rating</th>
-		</tr>
-		</thead>
-		<tbody>
-		<tr v-for="driver in filteredDrivers" :key="driver.id">
-			<td>{{ driver.name }}</td>
-			<td>{{ driver.team }}</td>
-			<td>{{ driver.owner }}</td>
-			<td class="centered medium" :style="driver.style">{{ driver.series }}</td>
-			<td class="centered medium">{{ driver.date_of_birth }}</td>
-			<td class="centered small">{{ driver.age }}</td>
-			<td class="centered medium">{{ driver.rating }}</td>
-		</tr>
-		</tbody>
-	</table>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Team</th>
+            <th>Owner</th>
+            <th class="text-center">Series</th>
+            <th class="text-center">DOB</th>
+            <th class="text-center">Age</th>
+            <th class="text-center">Rating</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="driver in filteredDrivers" :key="driver.id">
+            <DriverName :driver="driver"/>
+            <td>{{ driver.team?.name ?? 'Free Agent' }}</td>
+            <td>{{ driver.team?.owner.name ?? 'N/A' }}</td>
+            <td class="centered medium">
+                <SeriesStyle :team="driver.team" v-if="driver.team"/>
+                <template v-else>N/A</template>
+            </td>
+            <td class="centered medium">{{ driver.date_of_birth }}</td>
+            <td class="centered small">{{ driver.age }}</td>
+            <td class="centered medium">{{ driver.rating }}</td>
+        </tr>
+        </tbody>
+    </table>
 </template>
 
-<script setup>
-import { onMounted, reactive, ref, watch } from 'vue';
+<script setup lang="ts">
+import { computed, ComputedRef, reactive, Ref, ref, watch } from 'vue';
+import DetailedDriver from '@/Interfaces/Drivers/DetailedDriver';
+import BaseSeries from '@/Interfaces/Series/BaseSeries';
+import SeriesStyle from '@/Components/SeriesStyle.vue';
+import DriverName from '@/Components/DriverName.vue';
 
-const props = defineProps({
-	drivers: {
-		type: Array,
-		required: true,
-	},
-	series: {
-		type: Array,
-		required: true,
-	},
-	year: {
-		type: Number,
-		required: true,
-	},
+interface Props {
+    drivers: DetailedDriver[],
+    series: BaseSeries[],
+    year: number,
+}
+
+interface Filters {
+    name: string,
+    series: string,
+    min_age: number,
+    max_age: number,
+    min_rating: number,
+    max_rating: number,
+}
+
+const props = defineProps<Props>();
+
+const filters: Filters = reactive({
+    name: '',
+    series: '',
+    min_age: 0,
+    max_age: 0,
+    min_rating: 0,
+    max_rating: 0,
 });
 
-const allDrivers = ref([]);
-const filteredDrivers = ref([]);
+const filteredDrivers: Ref<DetailedDriver[]> = ref(props.drivers);
 
-const filters = reactive({
-	name: '',
-	series: '',
-	min_age: 0,
-	max_age: 0,
-	min_rating: 0,
-	max_rating: 0,
-});
-
-onMounted(() => {
-	allDrivers.value = props.drivers.map((driver) => {
-		const isFreeAgent = driver.team_id === null;
-
-		return {
-			name: driver.full_name,
-			team: isFreeAgent ? 'Free Agent' : driver.team.name,
-			owner: isFreeAgent ? 'N/A' : driver.team.owner.name,
-			series: isFreeAgent ? 'N/A' : driver.series.name,
-			series_id: isFreeAgent ? null : driver.series.id,
-			style: isFreeAgent ? '' : driver.series.style,
-			date_of_birth: driver.date_of_birth,
-			age: driver.age,
-			rating: driver.rating,
-		};
-	});
-
-	filteredDrivers.value = allDrivers.value;
-});
+const minAge: ComputedRef<number> = computed(() => Number(filters.min_age) || 0);
+const maxAge: ComputedRef<number> = computed(() => Number(filters.max_age) || 0);
+const minRating: ComputedRef<number> = computed(() => Number(filters.min_rating) || 0);
+const maxRating: ComputedRef<number> = computed(() => Number(filters.max_rating) || 0);
 
 watch(filters, () => {
-	let filtered = allDrivers.value;
+    const name = filters.name.toLowerCase();
+    const minimumAge = minAge.value;
+    const maximumAge = maxAge.value;
+    const minimumRating = minRating.value;
+    const maximumRating = maxRating.value;
+    const series = filters.series;
 
-	if (filters.name !== '') {
-		filtered = filtered.filter((driver) => driver.name.toLowerCase().includes(filters.name.toLowerCase()));
-	}
 
-	if (filters.series !== '') {
-		if (filters.series === 'fa') {
-			filtered = filtered.filter((driver) => driver.team === 'Free Agent');
-		} else {
-			filtered = filtered.filter((driver) => driver.series_id === filters.series);
-		}
-	}
+    if (name === '' && series === '' && minimumAge === 0 && maximumAge === 0 && minimumRating === 0 && maximumRating === 0) {
+        filteredDrivers.value = props.drivers;
+        return;
+    }
 
-	if (filters.min_age !== 0) {
-		filtered = filtered.filter((driver) => driver.age >= filters.min_age);
-	}
+    let filtered = props.drivers;
 
-	if (filters.max_age !== 0) {
-		if (filters.max_age > filters.min_age) {
-			filtered = filtered.filter((driver) => driver.age <= filters.max_age);
-		}
-	}
+    if (name !== '') {
+        filtered = filtered.filter((driver) => driver.full_name.toLowerCase().includes(name));
+    }
 
-	if (filters.min_rating !== 0) {
-		filtered = filtered.filter((driver) => driver.rating >= filters.min_rating);
-	}
+    if (series !== '') {
+        if (series === 'fa') {
+            filtered = filtered.filter((driver) => driver.team === null);
+        } else {
+            filtered = filtered.filter((driver) => driver.team?.series_id === series);
+        }
+    }
 
-	if (filters.max_rating !== 0) {
-		if (filters.max_rating > filters.min_rating) {
-			filtered = filtered.filter((driver) => driver.rating <= filters.max_rating);
-		}
-	}
+    if (minimumAge !== 0) {
+        filtered = filtered.filter((driver) => driver.age >= minimumAge);
+    }
 
-	filteredDrivers.value = filtered;
+    if (maximumAge !== 0) {
+        if (maximumAge > minimumAge) {
+            filtered = filtered.filter((driver) => driver.age <= maximumAge);
+        }
+    }
+
+    if (minimumRating !== 0) {
+        filtered = filtered.filter((driver) => driver.rating >= minimumRating);
+    }
+
+    if (maximumRating !== 0) {
+        if (maximumRating > minimumRating) {
+            filtered = filtered.filter((driver) => driver.rating <= maximumRating);
+        }
+    }
+
+    filteredDrivers.value = filtered;
 });
-</script>
-
-<script>
-export default { name: 'Index' };
 </script>

@@ -1,60 +1,264 @@
-@import 'variables';
+@import 'spacing';
 
-@import 'bootstrap';
+$dark: #15151E;
+$white: #FFFFFF;
+$primary: #E10600;
+
+$fontFamilyBody: 'titillium-regular', sans-serif;
+$fontFamilyMain: 'f1-regular', sans-serif;
+
+@font-face {
+  font-family: 'f1-regular';
+  src: url('fonts/f1-regular.ttf');
+}
+
+@font-face {
+  font-family: 'titillium-regular', sans-serif;
+  src: url('fonts/titillium-regular.ttf');
+}
+
+button {
+  border: 0;
+  padding: 0;
+}
+
+input {
+  border: none;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: $fontFamilyBody;
+  box-sizing: border-box !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: $fontFamilyMain;
+}
 
 body {
   background-color: $dark;
-  color: $color;
+  color: $white;
 }
 
-a {
-  text-decoration: none;
+.container {
+  width: 50%;
+  margin: 0 auto;
 }
 
-.table-dark {
-  & > :not(:first-child) {
-    border-top: none;
-  }
+.main-nav {
+  background-color: $primary;
+  margin-bottom: 2rem;
 
-  th {
-    font-size: 1.1rem;
-  }
+  .links {
+    display: flex;
+    justify-content: center;
 
-  td {
-    font-size: 1.1rem;
-  }
+    a {
+      font-family: $fontFamilyMain;
+      padding: 2rem;
+      color: $white;
+      text-decoration: none;
+      transition: background-color 0.25s ease-out;
 
-  th {
-    background-color: $darker;
-    padding: 1rem;
-  }
+      &:hover {
+        background-color: #000000;
+      }
 
-  tbody {
-    tr, td {
-      padding: 0.5rem 1rem;
-    }
-
-    tr:hover {
-      td {
-        background-color: $lighter;
-        border-color: $dark;
+      &.active {
+        span {
+          border-bottom: 1px solid $white;
+          border-right: 1px solid $white;
+          padding: 7px 10px 10px 7px;
+          border-bottom-right-radius: 10px;
+        }
       }
     }
   }
 }
 
-.centered {
-  text-align: center;
+.table {
+  white-space: nowrap;
+  width: 100%;
+  border-collapse: collapse;
+  border: none;
 
-  &.small {
-    width: 90px;
+  thead {
+    tr {
+      background-color: $primary;
+
+      th {
+        padding: 1.5rem 1rem;
+        font-family: $fontFamilyMain;
+        text-align: left;
+
+        &.text-center {
+          text-align: center;
+        }
+      }
+    }
   }
 
-  &.medium {
-    width: 120px;
+  tbody {
+    tr {
+      border-top: 2px solid black;
+
+      &:first-child {
+        border-top: none;
+      }
+
+      &:hover {
+        cursor: pointer;
+
+        td {
+          background-color: #3A3A41;
+        }
+      }
+
+      td {
+        border: none !important;
+        padding: 1.5rem 1rem;
+        background-color: #1F1F27;
+        font-family: $fontFamilyMain;
+
+        &.driver-name {
+          span {
+            font-family: $fontFamilyMain;
+
+            &.first-name {
+              color: #DDDDDD;
+            }
+
+            &.last-name {
+              text-transform: uppercase;
+              font-weight: bolder;
+            }
+          }
+        }
+
+        a {
+          color: $primary;
+          text-decoration: none;
+          font-family: $fontFamilyMain;
+          transition: color 0.25s ease-out;
+
+          &:hover {
+            color: $white;
+          }
+        }
+
+        .series-style {
+          font-family: $fontFamilyMain;
+          display: inline-block;
+          width: 85px;
+          padding: 10px 0;
+          border-radius: 5px;
+          font-size: 0.8rem;
+        }
+      }
+    }
+  }
+
+  .centered {
+    text-align: center;
+
+    &.small {
+      width: 90px;
+    }
+
+    &.medium {
+      width: 120px;
+    }
+
+    &.large {
+      width: 150px;
+    }
   }
 }
 
-.form-floating label {
-  color: $dark;
+.btn {
+  font-family: $fontFamilyBody;
+  letter-spacing: .5px;
+  line-height: 1.15;
+  text-transform: uppercase;
+  font-size: 13px;
+  display: inline-block;
+  border-radius: .25rem;
+  padding: 11px 14px 10px;
+  text-decoration: none;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &.btn-primary {
+    background-color: $primary;
+    color: $white;
+    transition: all 0.25s ease-out;
+
+    &:hover {
+      background-color: $white;
+      box-shadow: 0 0 0 2px $primary inset;
+      color: #000000;
+    }
+  }
+}
+
+a {
+  color: $primary;
+  text-decoration: none;
+  font-family: $fontFamilyMain;
+}
+
+.form-label {
+  font-family: $fontFamilyMain;
+  display: inline-block;
+  width: 100%;
+  margin-bottom: .5rem;
+}
+
+.form-label-inline {
+  font-family: $fontFamilyMain;
+  display: inline-block;
+}
+
+select {
+  border: 0;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select {
+  font-family: $fontFamilyMain;
+  width: 100%;
+  padding: 0.75rem 0.5rem;
+  font-size: 16px;
+  border-radius: 5px;
+  background-color: #3A3A41;
+  color: $white;
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.125rem $primary;
+  }
+}
+
+.grid {
+  display: grid;
+}
+
+.grid-cols-2 {
+  grid-template-columns: 1fr 1fr;
+}
+
+.gap-1 {
+  grid-gap: 1.5rem;
+}
+
+.filter-wrapper {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr 1fr 1fr 1fr;
+  grid-gap: 1rem;
 }
