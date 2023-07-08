@@ -3,7 +3,7 @@
 
     <div style="display:flex;justify-content: space-between" class="m-b-5">
         <button class="btn btn-primary" @click.prevent="runDev()">Run dev</button>
-        <button class="btn btn-secondary" @click.prevent="saveDev()">Save dev</button>
+        <button class="btn btn-secondary" @click.prevent="saveDev()" v-if="devPerformed">Save dev</button>
     </div>
 
     <table class="table">
@@ -69,8 +69,8 @@ interface DriverDevRange {
 const props = defineProps<Props>();
 
 const devDrivers: Ref<DevDriver[]> = ref(props.drivers);
-
 const driverDevRanges: Ref<DriverDevRange[]> = ref([]);
+const devPerformed: Ref<boolean> = ref(false);
 
 const runDev = (): void => {
     props.drivers.forEach(driver => {
@@ -79,6 +79,8 @@ const runDev = (): void => {
         driver.dev = getRoll(range.min_dev, range.max_dev);
         driver.newRating = driver.rating + driver.dev;
     });
+
+    devPerformed.value = true;
 };
 
 const saveDev = (): void => {
@@ -95,6 +97,8 @@ const saveDev = (): void => {
         preserveState: true,
         preserveScroll: true,
     });
+
+    devPerformed.value = false;
 };
 
 const getRoll = (min: number, max: number): number => {
