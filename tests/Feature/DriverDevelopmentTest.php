@@ -128,6 +128,28 @@ test('guests can not store development results', function () {
         ->assertRedirectToRoute('index');
 });
 
+it('shows development results', function () {
+    $round = DevelopmentRound::factory()->create();
+    DevelopmentResult::factory(10)->for($round)->create();
+
+    $result = DevelopmentResult::first();
+
+    $this->actingAs(createAdminUser())
+        ->get(route('admin.development.rounds.show', $round))
+        ->assertOk()
+        ->assertInertia(fn (AssertableInertia $page) => $page
+            ->component('Admin/Development/Show')
+            ->has('round', fn (AssertableInertia $prop) => $prop
+                ->where('year', $round->year)
+                ->etc())
+            ->has('results', 10, fn (AssertableInertia $prop) => $prop
+                ->where('driver.id', $result->driver_id)
+                ->where('rating', $result->rating)
+                ->where('dev', $result->dev)
+                ->where('new_rating', $result->new_rating)
+                ->etc()));
+});
+
 function getRanges(): array
 {
     return [
