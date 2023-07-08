@@ -63,3 +63,26 @@ a {
   grid-template-columns: 2fr 2fr 1fr 1fr 1fr 1fr;
   grid-gap: 1rem;
 }
+
+.tab-container {
+  display: flex;
+  justify-content: space-between;
+
+  .tab {
+    border-radius: 0 0 0.75rem 0;
+    padding: 1rem 1rem 0.5rem 1rem;
+    border-right: 3px solid #AAAAAA;
+    border-bottom: 3px solid #AAAAAA;
+    transition: all 0.25s ease-out;
+
+    &.active {
+      border-color: $primary;
+    }
+
+    &:hover {
+      cursor: pointer;
+      border-color: $white;
+      background-color: $primary;
+    }
+  }
+}

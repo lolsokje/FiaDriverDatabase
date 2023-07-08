@@ -1,12 +1,13 @@
 <?php
 
-use App\Http\Controllers\Actions\DevelopmentIndexPageController;
-use App\Http\Controllers\Actions\ShowDevelopmentPageController;
-use App\Http\Controllers\Actions\StoreDevelopmentRangesController;
 use App\Http\Controllers\Action\AddDriverToTeamController;
 use App\Http\Controllers\Action\DeleteDriverFromTeamController;
+use App\Http\Controllers\Actions\DevelopmentIndexPageController;
+use App\Http\Controllers\Actions\ShowDevelopmentRoundPage;
 use App\Http\Controllers\Actions\ShowIndexPageController;
 use App\Http\Controllers\Actions\ShowSettingsPageController;
+use App\Http\Controllers\Actions\StoreDevelopmentRangesController;
+use App\Http\Controllers\Actions\StoreDevelopmentResultController;
 use App\Http\Controllers\Actions\StoreSettingsController;
 use App\Http\Controllers\Actions\UpdateDriverRatingController;
 use App\Http\Controllers\AdminController;
@@ -33,7 +34,6 @@ Route::group(['prefix' => config('app.admin_panel_url'), 'as' => 'admin.'], func
         Route::resource('teams', TeamController::class)->except('destroy');
         Route::resource('drivers', DriverController::class)->except('show', 'destroy');
 
-
         Route::get('settings', ShowSettingsPageController::class)->name('settings.show');
         Route::post('settings', StoreSettingsController::class)->name('settings.store')->middleware('settings.filter');
 
@@ -42,9 +42,9 @@ Route::group(['prefix' => config('app.admin_panel_url'), 'as' => 'admin.'], func
         Route::delete('{team}/{driver}', DeleteDriverFromTeamController::class)->name('teams.driver.delete');
         Route::put('{team}/{driver}', AddDriverToTeamController::class)->name('teams.driver.add');
 
-        Route::get('development', ShowDevelopmentPageController::class)->name('development.show');
-        Route::get('development/show', ShowDevelopmentPageController::class)->name('development.show');
         Route::get('development', DevelopmentIndexPageController::class)->name('development.index');
         Route::post('development', StoreDevelopmentRangesController::class)->name('development.store');
+        Route::post('development/results', StoreDevelopmentResultController::class)->name('development.results.store');
+        Route::get('development/results/{round}', ShowDevelopmentRoundPage::class)->name('development.rounds.show');
     });
 });

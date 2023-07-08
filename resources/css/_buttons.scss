@@ -24,4 +24,24 @@
       color: #000000;
     }
   }
+
+  &.btn-secondary {
+    background-color: $white;
+    color: $dark;
+    transition: all 0.25s ease-out;
+
+    &:hover {
+      background-color: darken($white, 20%);
+    }
+  }
+
+  &.btn-danger {
+    background-color: darkred;
+    color: $white;
+    transition: all 0.25s ease-out;
+
+    &:hover {
+      background-color: lighten(darkred, 5%);
+    }
+  }
 }

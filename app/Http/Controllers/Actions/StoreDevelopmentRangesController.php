@@ -34,6 +34,6 @@ class StoreDevelopmentRangesController extends Controller
             });
         });
 
-        return redirect(route('admin.development.show'));
+        return to_route('admin.development.index');
     }
 }
