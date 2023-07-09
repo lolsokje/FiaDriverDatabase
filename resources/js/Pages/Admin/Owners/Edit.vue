@@ -14,6 +14,8 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
 import BaseOwner from '@/Interfaces/Owners/BaseOwner';
+import { breadcrumbStore } from '@/Stores/BreadcrumbStore';
+import Breadcrumb from '@/Entities/Breadcrumb';
 
 interface Props {
     owner: BaseOwner,
@@ -28,4 +30,10 @@ const props = defineProps<Props>();
 const form = useForm<Form>({
     name: props.owner.name,
 });
+
+breadcrumbStore.breadcrumbs = [
+    new Breadcrumb('Owners', route('admin.owners.index')),
+    new Breadcrumb(props.owner.name),
+    new Breadcrumb('Edit'),
+];
 </script>

@@ -34,6 +34,8 @@ import { useForm } from '@inertiajs/vue3';
 import BaseOwner from '@/Interfaces/Owners/BaseOwner';
 import BaseSeries from '@/Interfaces/Series/BaseSeries';
 import DetailedTeam from '@/Interfaces/Teams/DetailedTeam';
+import { breadcrumbStore } from '@/Stores/BreadcrumbStore';
+import Breadcrumb from '@/Entities/Breadcrumb';
 
 interface Props {
     team: DetailedTeam,
@@ -54,4 +56,10 @@ const form = useForm<Form>({
     owner_id: props.team.owner_id,
     series_id: props.team.series_id,
 });
+
+breadcrumbStore.breadcrumbs = [
+    new Breadcrumb('Teams', route('admin.teams.index')),
+    new Breadcrumb(props.team.name, route('admin.teams.show', props.team)),
+    new Breadcrumb('Edit'),
+];
 </script>

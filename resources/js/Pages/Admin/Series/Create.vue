@@ -23,6 +23,9 @@
 
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
+import Breadcrumb from '@/Entities/Breadcrumb';
+import route from 'ziggy-js';
+import { breadcrumbStore } from '@/Stores/BreadcrumbStore';
 
 interface Form {
     name: string,
@@ -35,4 +38,9 @@ const form = useForm<Form>({
     background_colour: '#000000',
     text_colour: '#FFFFFF',
 });
+
+breadcrumbStore.breadcrumbs = [
+    new Breadcrumb('Series', route('admin.series.index')),
+    new Breadcrumb('Create'),
+];
 </script>

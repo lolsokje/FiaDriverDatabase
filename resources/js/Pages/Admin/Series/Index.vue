@@ -23,10 +23,14 @@
 
 <script setup lang="ts">
 import BaseSeries from '@/Interfaces/Series/BaseSeries';
+import route from 'ziggy-js';
+import { breadcrumbStore } from '@/Stores/BreadcrumbStore';
 
 interface Props {
     series: BaseSeries[],
 }
 
 defineProps<Props>();
+
+breadcrumbStore.breadcrumbs = [];
 </script>

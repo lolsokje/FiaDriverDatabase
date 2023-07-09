@@ -52,6 +52,8 @@ import { useForm } from '@inertiajs/vue3';
 import { computed, ComputedRef } from 'vue';
 import DetailedSeries from '@/Interfaces/Series/DetailedSeries';
 import BaseTeam from '@/Interfaces/Teams/BaseTeam';
+import { breadcrumbStore } from '@/Stores/BreadcrumbStore';
+import Breadcrumb from '@/Entities/Breadcrumb';
 
 interface Props {
     series: DetailedSeries[],
@@ -78,4 +80,9 @@ const form = useForm<Form>({
     dob: '',
     rating: '',
 });
+
+breadcrumbStore.breadcrumbs = [
+    new Breadcrumb('Drivers', route('admin.drivers.index')),
+    new Breadcrumb('Create'),
+];
 </script>

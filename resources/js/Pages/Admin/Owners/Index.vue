@@ -23,10 +23,13 @@
 
 <script setup lang="ts">
 import BaseOwner from '@/Interfaces/Owners/BaseOwner';
+import { breadcrumbStore } from '@/Stores/BreadcrumbStore';
 
 interface Props {
     owners: BaseOwner[],
 }
 
 defineProps<Props>();
+
+breadcrumbStore.breadcrumbs = [];
 </script>

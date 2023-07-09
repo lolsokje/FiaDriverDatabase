@@ -54,6 +54,7 @@ import BaseOwner from '@/Interfaces/Owners/BaseOwner';
 import DetailedTeam from '@/Interfaces/Teams/DetailedTeam';
 import DetailedSeries from '@/Interfaces/Series/DetailedSeries';
 import SeriesStyle from '@/Components/SeriesStyle.vue';
+import { breadcrumbStore } from '@/Stores/BreadcrumbStore';
 
 interface Props {
     teams: DetailedTeam[],
@@ -95,4 +96,6 @@ const filterTeams = (): void => {
         return true;
     });
 };
+
+breadcrumbStore.breadcrumbs = [];
 </script>

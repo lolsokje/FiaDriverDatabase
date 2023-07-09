@@ -23,9 +23,10 @@
     </table>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { reactive } from 'vue';
 import { router } from '@inertiajs/vue3';
+import { breadcrumbStore } from '@/Stores/BreadcrumbStore.js';
 
 const props = defineProps({
     year: {
@@ -43,4 +44,6 @@ function saveSetting (setting) {
     params[setting] = settings[setting];
     router.post(route('admin.settings.store'), params, { replace: true, preserveState: true });
 }
+
+breadcrumbStore.breadcrumbs = [];
 </script>

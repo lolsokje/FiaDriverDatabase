@@ -56,6 +56,11 @@ a {
   color: $primary;
   text-decoration: none;
   font-family: $fontFamilyMain;
+  transition: color 0.25s ease-out;
+
+  &:hover {
+    color: darken($primary, 10%);
+  }
 }
 
 .filter-wrapper {
@@ -83,6 +88,23 @@ a {
       cursor: pointer;
       border-color: $white;
       background-color: $primary;
+    }
+  }
+}
+
+.breadcrumbs {
+  display: flex;
+  border-right: 3px solid $primary;
+  border-bottom: 3px solid $primary;
+  border-bottom-right-radius: 10px;
+  padding-bottom: 1rem;
+  padding-top: 0.5rem;
+
+  .breadcrumb-item {
+    list-style-type: none;
+
+    .breadcrumb-label {
+      font-family: $fontFamilyMain;
     }
   }
 }

@@ -48,6 +48,7 @@
 import DetailedDriver from '@/Interfaces/Drivers/DetailedDriver';
 import SeriesStyle from '@/Components/SeriesStyle.vue';
 import DriverName from '@/Components/DriverName.vue';
+import { breadcrumbStore } from '@/Stores/BreadcrumbStore';
 
 interface Props {
     drivers: DetailedDriver[],
@@ -55,4 +56,6 @@ interface Props {
 }
 
 defineProps<Props>();
+
+breadcrumbStore.breadcrumbs = [];
 </script>

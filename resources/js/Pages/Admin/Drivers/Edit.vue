@@ -1,7 +1,7 @@
 <template>
-    <h2>Update driver</h2>
+    <h1>Update driver</h1>
 
-    <form @submit.prevent="form.put(route('admin.drivers.update', [driver]))">
+    <form @submit.prevent="form.put(route('admin.drivers.update', [driver]))" class="m-t-5">
         <div class="m-b-4 grid grid-cols-2 gap-1">
             <div>
                 <label for="series" class="form-label">Series</label>
@@ -55,6 +55,8 @@ import { computed, ComputedRef } from 'vue';
 import DetailedSeries from '@/Interfaces/Series/DetailedSeries';
 import BaseTeam from '@/Interfaces/Teams/BaseTeam';
 import DetailedDriver from '@/Interfaces/Drivers/DetailedDriver';
+import { breadcrumbStore } from '@/Stores/BreadcrumbStore';
+import Breadcrumb from '@/Entities/Breadcrumb';
 
 interface Props {
     driver: DetailedDriver,
@@ -82,4 +84,10 @@ const form = useForm<Form>({
     dob: props.driver.dob,
     rating: props.driver.rating,
 });
+
+breadcrumbStore.breadcrumbs = [
+    new Breadcrumb('Drivers', route('admin.drivers.index')),
+    new Breadcrumb(props.driver.full_name),
+    new Breadcrumb('Edit'),
+];
 </script>

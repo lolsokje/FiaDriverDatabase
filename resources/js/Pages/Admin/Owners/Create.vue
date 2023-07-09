@@ -13,6 +13,8 @@
 
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
+import { breadcrumbStore } from '@/Stores/BreadcrumbStore';
+import Breadcrumb from '@/Entities/Breadcrumb';
 
 interface Form {
     name: string,
@@ -21,4 +23,9 @@ interface Form {
 const form = useForm<Form>({
     name: '',
 });
+
+breadcrumbStore.breadcrumbs = [
+    new Breadcrumb('Owners', route('admin.owners.index')),
+    new Breadcrumb('Create'),
+];
 </script>

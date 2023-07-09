@@ -21,11 +21,16 @@
             </InertiaLink>
         </div>
     </nav>
+
+    <div class="container">
+        <Breadcrumbs :breadcrumbs="[]"/>
+    </div>
 </template>
 
 <script setup lang="ts">
 import { usePage } from '@inertiajs/vue3';
 import { computed, ComputedRef } from 'vue';
+import Breadcrumbs from '@/Components/Breadcrumbs.vue';
 
 const page = usePage();
 

@@ -1,5 +1,5 @@
 <template>
-    <h1>{{ team.name }}</h1>
+    <h1 class="m-b-3">{{ team.name }}</h1>
     <h4>Owned by {{ team.owner.name }}</h4>
 
     <div class="m-y-4">
@@ -57,6 +57,8 @@ import { Ref, ref } from 'vue';
 import { router } from '@inertiajs/vue3';
 import DetailedTeam from '@/Interfaces/Teams/DetailedTeam';
 import BaseDriver from '@/Interfaces/Drivers/BaseDriver';
+import { breadcrumbStore } from '@/Stores/BreadcrumbStore';
+import Breadcrumb from '@/Entities/Breadcrumb';
 
 interface Props {
     team: DetailedTeam,
@@ -121,4 +123,10 @@ const saveDriverRatings = (): void => {
 
     router.put(route('admin.drivers.ratings.update'), { drivers: params }, { replace: true, preserveState: true });
 };
+
+breadcrumbStore.breadcrumbs = [
+    new Breadcrumb('Teams', route('admin.teams.index')),
+    new Breadcrumb(props.team.name),
+    new Breadcrumb('Details'),
+];
 </script>
