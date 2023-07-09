@@ -23,24 +23,20 @@ import DevelopmentRound from '@/Interfaces/Development/DevelopmentRound';
 import History from '@/Components/Development/History.vue';
 import { developmentStore } from '@/Stores/DevelopmentStore';
 import DevDriver from '@/Interfaces/Drivers/DevDriver';
+import { breadcrumbStore } from '@/Stores/BreadcrumbStore';
+import { Tabs } from '@/Enums/Tab';
 
 interface Props {
     drivers: DevDriver[],
     ageRanges: AgeRange[],
     developmentRounds: DevelopmentRound[],
     year: number,
-}
-
-enum Tabs {
-    PERFORM = 'Perform',
-    OVERVIEW = 'Overview',
-    CONFIGURATION = 'Configuration',
-    HISTORY = 'History',
+    tab: string | null,
 }
 
 const props = defineProps<Props>();
 
-const tab: Ref<string> = ref(Tabs.PERFORM);
+const tab: Ref<string> = ref(props.tab ?? Tabs.PERFORM);
 
 const active = (tabToCheck: string): boolean => {
     return tab.value === tabToCheck;
@@ -50,4 +46,6 @@ developmentStore.drivers = props.drivers;
 developmentStore.ageRanges = props.ageRanges;
 developmentStore.developmentRounds = props.developmentRounds;
 developmentStore.year = props.year;
+
+breadcrumbStore.breadcrumbs = [];
 </script>

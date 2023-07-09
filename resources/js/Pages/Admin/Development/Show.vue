@@ -32,11 +32,21 @@
 import DevelopmentRound from '@/Interfaces/Development/DevelopmentRound';
 import DevelopmentResult from '@/Interfaces/Development/DevelopmentResult';
 import SeriesStyle from '@/Components/SeriesStyle.vue';
+import { breadcrumbStore } from '@/Stores/BreadcrumbStore';
+import Breadcrumb from '@/Entities/Breadcrumb';
+import route from 'ziggy-js';
+import { Tabs } from '@/Enums/Tab';
 
 interface Props {
     round: DevelopmentRound,
     results: DevelopmentResult[],
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
+
+breadcrumbStore.breadcrumbs = [
+    new Breadcrumb('Development', route('admin.development.index')),
+    new Breadcrumb('Results', route('admin.development.index', { tab: Tabs.HISTORY })),
+    new Breadcrumb(props.round.year.toString()),
+];
 </script>
