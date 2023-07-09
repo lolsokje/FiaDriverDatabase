@@ -28,22 +28,25 @@ import { reactive } from 'vue';
 import { router } from '@inertiajs/vue3';
 import { breadcrumbStore } from '@/Stores/BreadcrumbStore.js';
 
-const props = defineProps({
-    year: {
-        type: Number,
-        required: true,
-    },
-});
+interface Props {
+    year: number,
+}
 
-const settings = reactive({
+interface Settings {
+    year: number,
+}
+
+const props = defineProps<Props>();
+
+const settings: Settings = reactive({
     year: props.year,
 });
 
-function saveSetting (setting) {
+const saveSetting = (setting: string): void => {
     const params = {};
     params[setting] = settings[setting];
     router.post(route('admin.settings.store'), params, { replace: true, preserveState: true });
-}
+};
 
 breadcrumbStore.breadcrumbs = [];
 </script>
