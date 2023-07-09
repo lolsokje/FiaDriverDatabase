@@ -1,6 +1,8 @@
 <template>
     <h2 class="m-b-5">Development results</h2>
 
+    <button class="btn btn-danger m-y-5" @click.prevent="restore()">Restore</button>
+
     <table class="table">
         <thead>
         <tr>
@@ -36,6 +38,7 @@ import { breadcrumbStore } from '@/Stores/BreadcrumbStore';
 import Breadcrumb from '@/Entities/Breadcrumb';
 import route from 'ziggy-js';
 import { Tabs } from '@/Enums/Tab';
+import { router } from '@inertiajs/vue3';
 
 interface Props {
     round: DevelopmentRound,
@@ -43,6 +46,14 @@ interface Props {
 }
 
 const props = defineProps<Props>();
+
+const restore = (): void => {
+    if (! confirm('Are you sure you want to restore ratings from this round? This will delete the current and any subsequent development rounds')) {
+        return;
+    }
+
+    router.delete(route('admin.development.results.destroy', props.round));
+};
 
 breadcrumbStore.breadcrumbs = [
     new Breadcrumb('Development', route('admin.development.index')),

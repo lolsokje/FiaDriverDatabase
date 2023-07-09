@@ -150,6 +150,60 @@ it('shows development results', function () {
                 ->etc()));
 });
 
+it('can restore development to a previous state', function () {
+    [$driverOne, $driverTwo] = Driver::factory(2)->sequence(
+        ['rating' => 40],
+        ['rating' => 45],
+    )->create();
+
+    $driverOneRating = $driverOne->rating;
+    $driverTwoRating = $driverTwo->rating;
+
+    $round = DevelopmentRound::factory()->create();
+
+    foreach ([$driverOne, $driverTwo] as $driver) {
+        DevelopmentResult::factory()->for($driver)->for($round)->create([
+            'rating' => $driver->rating,
+            'dev' => 2,
+            'new_rating' => $driver->rating + 2,
+        ]);
+
+        $driver->update(['rating' => $driver->rating + 2]);
+    }
+
+    $this->assertCount(2, $round->developmentResults);
+
+    $this->actingAs(createAdminUser())
+        ->delete(route('admin.development.results.destroy', $round))
+        ->assertRedirectToRoute('admin.development.index');
+
+    $this->assertCount(0, DevelopmentRound::all());
+    $this->assertCount(0, DevelopmentResult::all());
+
+    $this->assertEquals($driverOneRating, $driverOne->fresh()->rating);
+    $this->assertEquals($driverTwoRating, $driverTwo->fresh()->rating);
+});
+
+it('removes development rounds after the deleted rounds when restoring ratings', function () {
+    $rounds = [$roundOne, $roundTwo, $roundThree, $roundFour] = DevelopmentRound::factory(4)->create();
+
+    foreach ($rounds as $round) {
+        DevelopmentResult::factory(5)->for($round)->create();
+    }
+
+    $this->assertCount(20, DevelopmentResult::all());
+
+    $this->actingAs(createAdminUser())
+        ->delete(route('admin.development.results.destroy', $roundTwo))
+        ->assertRedirectToRoute('admin.development.index');
+
+    $this->assertCount(1, DevelopmentRound::all());
+    $this->assertNotNull(DevelopmentRound::find($roundOne->id));
+    $this->assertNull(DevelopmentRound::find($roundTwo->id));
+    $this->assertNull(DevelopmentRound::find($roundThree->id));
+    $this->assertNull(DevelopmentRound::find($roundFour->id));
+});
+
 function getRanges(): array
 {
     return [

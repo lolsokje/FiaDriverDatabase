@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Action\AddDriverToTeamController;
 use App\Http\Controllers\Action\DeleteDriverFromTeamController;
+use App\Http\Controllers\Actions\DeleteDevelopmentRoundController;
 use App\Http\Controllers\Actions\DevelopmentIndexPageController;
 use App\Http\Controllers\Actions\ShowDevelopmentRoundPage;
 use App\Http\Controllers\Actions\ShowIndexPageController;
@@ -46,5 +47,7 @@ Route::group(['prefix' => config('app.admin_panel_url'), 'as' => 'admin.'], func
         Route::post('development', StoreDevelopmentRangesController::class)->name('development.store');
         Route::post('development/results', StoreDevelopmentResultController::class)->name('development.results.store');
         Route::get('development/results/{round}', ShowDevelopmentRoundPage::class)->name('development.rounds.show');
+        Route::delete('development/results/{round}', DeleteDevelopmentRoundController::class)
+            ->name('development.results.destroy');
     });
 });
