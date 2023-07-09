@@ -36,12 +36,12 @@
   }
 
   &.btn-danger {
-    background-color: darkred;
+    background-color: $danger;
     color: $white;
     transition: all 0.25s ease-out;
 
     &:hover {
-      background-color: lighten(darkred, 5%);
+      background-color: lighten($danger, 5%);
     }
   }
 }

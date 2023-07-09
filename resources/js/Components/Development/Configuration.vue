@@ -65,10 +65,7 @@ import { useForm } from '@inertiajs/vue3';
 import { computed, ComputedRef, reactive } from 'vue';
 import AgeRange from '@/Interfaces/Development/AgeRange';
 import RatingRange from '@/Interfaces/Development/RatingRange';
-
-interface Props {
-    ageRanges: AgeRange[],
-}
+import { developmentStore } from '@/Stores/DevelopmentStore';
 
 interface Form {
     ageRanges: AgeRange[],
@@ -79,10 +76,8 @@ interface State {
     max_age: number,
 }
 
-const props = defineProps<Props>();
-
 const form = useForm<Form>({
-    ageRanges: props.ageRanges ?? [],
+    ageRanges: developmentStore.ageRanges ?? [],
 });
 
 const state: State = reactive({
@@ -112,6 +107,7 @@ const deleteAgeRange = (ageRange: AgeRange): void => {
 const addRatingRange = (ageRange: AgeRange): void => {
     const latestMaxRating = ageRange.ranges.at(-1)?.max_rating ?? 0;
     ageRange.ranges.push({
+        id: 0,
         min_rating: latestMaxRating + 1,
         max_rating: latestMaxRating + 10,
         min_dev: 0,

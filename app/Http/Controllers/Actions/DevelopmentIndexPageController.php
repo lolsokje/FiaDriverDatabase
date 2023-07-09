@@ -19,6 +19,7 @@ class DevelopmentIndexPageController extends Controller
             'drivers' => DetailedDriverResource::collection(Driver::sortedBySeries()),
             'ageRanges' => AgeRange::with('ranges')->get(),
             'developmentRounds' => DevelopmentRoundResource::collection(DevelopmentRound::query()->latest()->get()),
+            'year' => resolve('general_settings')->year,
         ]);
     }
 }

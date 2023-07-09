@@ -2,7 +2,7 @@
     <h2 class="m-b-5">Development ranges overview</h2>
 
     <div class="grid grid-cols-2 gap-1">
-        <div v-for="ageRange in ageRanges" :key="ageRange.id">
+        <div v-for="ageRange in developmentStore.ageRanges" :key="ageRange.id">
             <h2 class="m-b-4">{{ ageRange.min_age }} - {{ ageRange.max_age }} year old</h2>
 
             <table class="table">
@@ -26,11 +26,5 @@
 </template>
 
 <script lang="ts" setup>
-import AgeRange from '@/Interfaces/Development/AgeRange';
-
-interface Props {
-    ageRanges: AgeRange[],
-}
-
-defineProps<Props>();
+import { developmentStore } from '@/Stores/DevelopmentStore';
 </script>

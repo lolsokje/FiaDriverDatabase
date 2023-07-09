@@ -7,10 +7,10 @@
         </div>
     </div>
 
-    <Perform v-if="active(Tabs.PERFORM)" :drivers="drivers" :ageRanges="ageRanges"/>
-    <Overview v-if="active(Tabs.OVERVIEW)" :ageRanges="ageRanges"/>
-    <Configuration v-if="active(Tabs.CONFIGURATION)" :ageRanges="ageRanges"/>
-    <History v-if="active(Tabs.HISTORY)" :rounds="developmentRounds"/>
+    <Perform v-if="active(Tabs.PERFORM)"/>
+    <Overview v-if="active(Tabs.OVERVIEW)"/>
+    <Configuration v-if="active(Tabs.CONFIGURATION)"/>
+    <History v-if="active(Tabs.HISTORY)"/>
 </template>
 
 <script setup lang="ts">
@@ -19,14 +19,16 @@ import AgeRange from '@/Interfaces/Development/AgeRange';
 import { ref, Ref } from 'vue';
 import Overview from '@/Components/Development/Overview.vue';
 import Perform from '@/Components/Development/Perform.vue';
-import DetailedDriver from '@/Interfaces/Drivers/DetailedDriver';
 import DevelopmentRound from '@/Interfaces/Development/DevelopmentRound';
 import History from '@/Components/Development/History.vue';
+import { developmentStore } from '@/Stores/DevelopmentStore';
+import DevDriver from '@/Interfaces/Drivers/DevDriver';
 
 interface Props {
-    drivers: DetailedDriver[],
+    drivers: DevDriver[],
     ageRanges: AgeRange[],
     developmentRounds: DevelopmentRound[],
+    year: number,
 }
 
 enum Tabs {
@@ -36,11 +38,16 @@ enum Tabs {
     HISTORY = 'History',
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
 
 const tab: Ref<string> = ref(Tabs.PERFORM);
 
 const active = (tabToCheck: string): boolean => {
     return tab.value === tabToCheck;
 };
+
+developmentStore.drivers = props.drivers;
+developmentStore.ageRanges = props.ageRanges;
+developmentStore.developmentRounds = props.developmentRounds;
+developmentStore.year = props.year;
 </script>

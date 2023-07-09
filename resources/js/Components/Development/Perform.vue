@@ -1,7 +1,14 @@
 <template>
     <h2 class="m-b-5">Perform driver development</h2>
 
-    <div style="display:flex;justify-content: space-between" class="m-b-5">
+    <div class="banner danger m-b-5" v-if="hasDevForYear">
+        <h4>
+            Development has already been run for {{ developmentStore.year }}, make sure you're meant to run development
+            again
+        </h4>
+    </div>
+
+    <div class="m-b-5 flex justify-space-between">
         <button class="btn btn-primary" @click.prevent="runDev()">Run dev</button>
         <button class="btn btn-secondary" @click.prevent="saveDev()" v-if="devPerformed">Save dev</button>
     </div>
@@ -51,29 +58,20 @@ import SeriesStyle from '@/Components/SeriesStyle.vue';
 import RatingRange from '@/Interfaces/Development/RatingRange';
 import { onMounted, ref, Ref } from 'vue';
 import { router } from '@inertiajs/vue3';
-
-interface DevDriver extends DetailedDriver {
-    dev: number,
-    newRating: number,
-}
-
-interface Props {
-    drivers: DevDriver[],
-    ageRanges: AgeRange[],
-}
+import DevDriver from '@/Interfaces/Drivers/DevDriver';
+import { developmentStore } from '@/Stores/DevelopmentStore';
 
 interface DriverDevRange {
     [key: string]: RatingRange,
 }
 
-const props = defineProps<Props>();
-
-const devDrivers: Ref<DevDriver[]> = ref(props.drivers);
+const devDrivers: Ref<DevDriver[]> = ref(developmentStore.drivers);
 const driverDevRanges: Ref<DriverDevRange[]> = ref([]);
 const devPerformed: Ref<boolean> = ref(false);
+const hasDevForYear: Ref<boolean> = ref(false);
 
 const runDev = (): void => {
-    props.drivers.forEach(driver => {
+    developmentStore.drivers.forEach(driver => {
         const range: RatingRange = driverDevRanges.value[driver.id];
 
         driver.dev = getRoll(range.min_dev, range.max_dev);
@@ -84,7 +82,7 @@ const runDev = (): void => {
 };
 
 const saveDev = (): void => {
-    const drivers = props.drivers.map(driver => {
+    const drivers = developmentStore.drivers.map(driver => {
         return {
             id: driver.id,
             rating: driver.rating,
@@ -118,7 +116,7 @@ const getRatingRangeForDriver = (driver: DetailedDriver): RatingRange => {
 };
 
 const getAgeRangeForDriver = (driver: DetailedDriver): AgeRange => {
-    const ageRange = props.ageRanges.find(r => driver.age <= r.max_age && driver.age >= r.min_age);
+    const ageRange = developmentStore.ageRanges.find(r => driver.age <= r.max_age && driver.age >= r.min_age);
 
     if (! ageRange) {
         alert(`No relevant age range could be found for [${driver.full_name}], age [${driver.age}]`);
@@ -129,8 +127,12 @@ const getAgeRangeForDriver = (driver: DetailedDriver): AgeRange => {
 };
 
 onMounted(() => {
-    props.drivers.forEach(driver => {
+    devDrivers.value = developmentStore.drivers;
+
+    developmentStore.drivers.forEach(driver => {
         driverDevRanges.value[driver.id] = getRatingRangeForDriver(driver);
     });
+
+    hasDevForYear.value = developmentStore.developmentRounds.some(round => round.year === developmentStore.year);
 });
 </script>

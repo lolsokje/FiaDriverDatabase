@@ -108,3 +108,13 @@ a {
     }
   }
 }
+
+.banner {
+  padding: 2rem 1rem;
+  border-radius: 10px;
+  text-align: center;
+
+  &.danger {
+    background-color: $danger;
+  }
+}

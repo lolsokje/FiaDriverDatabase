@@ -10,7 +10,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="round in rounds" :key="round.id">
+        <tr v-for="round in developmentStore.developmentRounds" :key="round.id">
             <td class="w-full">{{ round.year }}</td>
             <td class="centered">{{ round.created_at }}</td>
             <td class="centered small">
@@ -22,11 +22,5 @@
 </template>
 
 <script lang="ts" setup>
-import DevelopmentRound from '@/Interfaces/Development/DevelopmentRound';
-
-interface Props {
-    rounds: DevelopmentRound[],
-}
-
-defineProps<Props>();
+import { developmentStore } from '@/Stores/DevelopmentStore';
 </script>
