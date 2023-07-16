@@ -16,6 +16,7 @@ class DriverFactory extends Factory
     {
         return [
             'team_id' => Team::factory(),
+            'driver_id' => strtoupper(fake()->randomLetter()) . fake()->numberBetween(1, 30),
             'first_name' => $this->faker->firstName(),
             'last_name' => $this->faker->lastName(),
             'dob' => $this->faker->date(),

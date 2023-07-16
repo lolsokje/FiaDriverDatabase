@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Drivers\GetDriversForAdminIndex;
 use App\Http\Requests\DriverCreateRequest;
 use App\Http\Resources\Admin\Drivers\DetailedDriverResource;
+use App\Http\Resources\Admin\Series\BaseSeriesResource;
 use App\Http\Resources\Admin\Series\DetailedSeriesResource;
 use App\Models\Driver;
 use App\Models\Series;
@@ -13,11 +15,11 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class DriverController extends Controller
 {
-    public function index(): Response
+    public function index(GetDriversForAdminIndex $getDriversForAdminIndex): Response
     {
         return Inertia::render('Admin/Drivers/Index', [
-            'drivers' => DetailedDriverResource::collection(Driver::withoutFreeAgents()->sortedBySeries()),
-            'freeAgents' => DetailedDriverResource::collection(Driver::freeAgents()->get()),
+            'series' => BaseSeriesResource::collection(Series::orderBy('name')->get()),
+            'drivers' => DetailedDriverResource::collection($getDriversForAdminIndex->handle()),
         ]);
     }
 

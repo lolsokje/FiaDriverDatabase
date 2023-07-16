@@ -10,16 +10,15 @@ it('sorts drivers by team name and series name on the admin page', function () {
 
     $this->actingAs(createAdminUser())
         ->get(route('admin.drivers.index'))
-        ->assertInertia(fn(AssertableInertia $page) => $page
+        ->assertInertia(fn (AssertableInertia $page) => $page
             ->component('Admin/Drivers/Index')
-            ->has('drivers', 3)
-            ->has('freeAgents', 1)
+            ->has('drivers', 4)
             ->where('drivers.0.team_id', $teamC->id)
             ->where('drivers.0.team.series_id', $seriesA->id)
             ->where('drivers.1.team_id', $teamB->id)
             ->where('drivers.1.team.series_id', $seriesB->id)
             ->where('drivers.2.team_id', $teamA->id)
-            ->where('drivers.2.team.series_id', $seriesC->id)
+            ->where('drivers.2.team.series_id', $seriesC->id),
         );
 });
 
@@ -27,7 +26,7 @@ it('sorts drivers by team name and series name with free agents sorted bottom on
     [$seriesA, $seriesB, $seriesC, $teamA, $teamB, $teamC] = createRequiredTestModels();
 
     $this->get(route('index'))
-        ->assertInertia(fn(AssertableInertia $page) => $page
+        ->assertInertia(fn (AssertableInertia $page) => $page
             ->component('Index')
             ->has('drivers', 4)
             ->where('drivers.0.team_id', $teamC->id)
@@ -36,7 +35,7 @@ it('sorts drivers by team name and series name with free agents sorted bottom on
             ->where('drivers.1.team.series_id', $seriesB->id)
             ->where('drivers.2.team_id', $teamA->id)
             ->where('drivers.2.team.series_id', $seriesC->id)
-            ->where('drivers.3.team_id', null)
+            ->where('drivers.3.team_id', null),
         );
 });
 

@@ -7,21 +7,11 @@ use Illuminate\Support\Facades\Gate;
 
 class DriverCreateRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
     public function authorize(): bool
     {
         return Gate::check('is-admin');
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
     public function rules(): array
     {
         return [
@@ -30,6 +20,7 @@ class DriverCreateRequest extends FormRequest
             'last_name' => ['required'],
             'dob' => ['required', 'date'],
             'rating' => ['required', 'integer', 'min:0'],
+            'driver_id' => ['nullable', 'max:4'],
         ];
     }
 }

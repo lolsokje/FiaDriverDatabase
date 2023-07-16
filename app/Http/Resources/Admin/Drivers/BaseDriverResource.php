@@ -21,6 +21,7 @@ class BaseDriverResource extends UnwrappedJsonResource
             'date_of_birth' => $this->date_of_birth,
             'age' => $this->age,
             'team_id' => $this->team_id,
+            'driver_id' => $this->driver_id,
         ];
     }
 }

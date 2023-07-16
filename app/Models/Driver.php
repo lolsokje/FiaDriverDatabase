@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class Driver extends SnowflakeModel
 {
@@ -54,10 +55,14 @@ class Driver extends SnowflakeModel
         return Attribute::get(fn () => $this->team?->owner);
     }
 
-    public function series(): Attribute
+    public function series(): HasOneThrough
     {
-        return Attribute::get(fn () => $this->team?->series);
+        return $this->hasOneThrough(Series::class, Team::class, 'id', 'id', 'team_id', 'series_id');
     }
+    //    public function series(): Attribute
+    //    {
+    //        return Attribute::get(fn () => $this->team?->series);
+    //    }
 
     public function scopeWithoutFreeAgents(Builder $query): Builder
     {

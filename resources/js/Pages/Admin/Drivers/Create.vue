@@ -31,7 +31,7 @@
             </div>
         </div>
 
-        <div class="m-b-4 grid grid-cols-2 gap-1">
+        <div class="m-b-4 grid grid-cols-3 gap-1">
             <div>
                 <label for="dob" class="form-label">Date of birth</label>
                 <input type="date" id="dob" v-model="form.dob" required>
@@ -40,6 +40,11 @@
             <div>
                 <label for="rating" class="form-label">Rating</label>
                 <input type="number" id="rating" v-model="form.rating" min="0" required>
+            </div>
+
+            <div>
+                <label for="driver_id" class="form-label">Driver ID</label>
+                <input type="text" id="driver_id" v-model="form.driver_id">
             </div>
         </div>
 
@@ -66,6 +71,7 @@ interface Form {
     last_name: string,
     dob: string,
     rating: string,
+    driver_id: string,
 }
 
 const props = defineProps<Props>();
@@ -79,6 +85,7 @@ const form = useForm<Form>({
     last_name: '',
     dob: '',
     rating: '',
+    driver_id: '',
 });
 
 breadcrumbStore.breadcrumbs = [

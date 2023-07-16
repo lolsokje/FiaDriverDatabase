@@ -214,20 +214,6 @@ test('the driver can be a free agent', function () {
         ->assertSessionHasNoErrors();
 });
 
-test('free agents are shown on the driver index page', function () {
-    Driver::factory(10)->create();
-    Driver::factory(2)->freeAgent()->create();
-
-    $this->actingAs(createAdminUser())
-        ->get(route('admin.drivers.index'))
-        ->assertOk()
-        ->assertInertia(fn (AssertableInertia $page) => $page
-            ->component('Admin/Drivers/Index')
-            ->has('drivers', 10)
-            ->has('freeAgents', 2),
-        );
-});
-
 test('an admin can view the show team page', function () {
     $team = Team::factory()->create();
 
@@ -276,10 +262,12 @@ test('an admin can delete a driver from a team', function () {
     $team = Team::factory()->create();
     $driver = Driver::factory()->for($team)->create();
 
-    expect(count($team->drivers))->toBeOne();
+    $this->assertCount(1, $team->drivers);
 
     $this->actingAs(createAdminUser())
-        ->delete(route('admin.teams.driver.delete', [$team, $driver]))
+        ->put(route('admin.teams.drivers.update', $team), [
+            'drivers' => [[]],
+        ])
         ->assertRedirect(route('admin.teams.show', [$team]));
 
     $this->assertCount(0, $team->fresh()->drivers);
@@ -287,11 +275,13 @@ test('an admin can delete a driver from a team', function () {
 
 test('a guest can not delete a driver from a team', function () {
     $team = Team::factory()->create();
-    $driver = Driver::factory()->for($team)->create();
+    Driver::factory()->for($team)->create();
 
     $this->assertCount(1, $team->drivers);
 
-    $this->delete(route('admin.teams.driver.delete', [$team, $driver]))
+    $this->put(route('admin.teams.drivers.update', $team), [
+        'drivers' => [[]],
+    ])
         ->assertRedirectToRoute('index');
 
     $this->assertCount(1, $team->fresh()->drivers);
@@ -304,8 +294,10 @@ test('an admin can add drivers to a team', function () {
     $this->assertCount(0, $team->drivers);
 
     $this->actingAs(createAdminUser())
-        ->put(route('admin.teams.driver.add', [$team, $driver]))
-        ->assertRedirect(route('admin.teams.show', [$team]));
+        ->put(route('admin.teams.drivers.update', $team), [
+            'drivers' => [['id' => $driver->id, 'rating' => 40, 'driver_id' => 'A1']],
+        ])
+        ->assertRedirectToRoute('admin.teams.show', $team);
 
     $this->assertCount(1, $team->fresh()->drivers);
 });
@@ -316,7 +308,9 @@ test('a guest can not add drivers to a team', function () {
 
     $this->assertCount(0, $team->drivers);
 
-    $this->put(route('admin.teams.driver.add', [$team, $driver]))
+    $this->put(route('admin.teams.drivers.update', $team), [
+        'drivers' => [['id' => $driver->id, 'rating' => 40, 'driver_id' => 'A1']],
+    ])
         ->assertRedirectToRoute('index');
 
     $this->assertCount(0, $team->fresh()->drivers);

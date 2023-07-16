@@ -2,42 +2,36 @@
     <h1 class="m-b-3">{{ team.name }}</h1>
     <h4>Owned by {{ team.owner.name }}</h4>
 
-    <div class="m-y-4">
-        <div>
-            <input type="checkbox" id="edit-mode" v-model="editMode">
-            <label for="edit-mode" class="form-label-inline m-l-3">Edit ratings</label>
-        </div>
-
-        <div v-if="editMode">
-            <button type="button" class="btn btn-primary m-t-3" @click.prevent="saveDriverRatings">
-                Save ratings
-            </button>
-        </div>
-    </div>
-    <table class="table">
+    <table class="table m-y-4">
         <thead>
         <tr>
             <th>Driver name</th>
             <th class="centered">Rating</th>
-            <th class="centered large" v-if="editMode">Edit rating</th>
             <th class="centered">Age</th>
+            <th class="centered">ID</th>
             <th></th>
         </tr>
         </thead>
         <tbody>
-        <tr v-for="driver in drivers" :key="driver.id">
-            <td>{{ driver.full_name }}</td>
-            <td class="centered small">{{ driver.rating }}</td>
-            <td class="centered large" v-if="editMode">
+        <tr v-for="driver in form.drivers" :key="driver.id">
+            <DriverName :driver="driver"/>
+            <td class="centered medium">
                 <input type="number" v-model="driver.rating">
             </td>
             <td class="centered small">{{ driver.age }}</td>
+            <td class="centered medium">
+                <input type="text" v-model="driver.driver_id">
+            </td>
             <td class="centered small">
                 <a @click.prevent="deleteDriver(driver)" class="text-primary" role="button">delete</a>
             </td>
         </tr>
         </tbody>
     </table>
+
+    <form @submit.prevent="form.put(route('admin.teams.drivers.update', team))">
+        <button class="btn btn-primary m-y-4">Save drivers</button>
+    </form>
 
     <div class="m-t-4">
         <div class="m-b-4">
@@ -48,80 +42,52 @@
             </select>
         </div>
 
-        <button class="btn btn-primary" role="button" @click.prevent="addDriver">Add driver</button>
+        <button class="btn btn-secondary" role="button" @click.prevent="addDriver()">Add driver</button>
     </div>
 </template>
 
 <script setup lang="ts">
 import { Ref, ref } from 'vue';
-import { router } from '@inertiajs/vue3';
 import DetailedTeam from '@/Interfaces/Teams/DetailedTeam';
 import BaseDriver from '@/Interfaces/Drivers/BaseDriver';
 import { breadcrumbStore } from '@/Stores/BreadcrumbStore';
 import Breadcrumb from '@/Entities/Breadcrumb';
+import { useForm } from '@inertiajs/vue3';
+import DriverName from '@/Components/DriverName.vue';
 
 interface Props {
     team: DetailedTeam,
     drivers: BaseDriver[],
 }
 
+interface Form {
+    drivers: BaseDriver[],
+}
+
 const props = defineProps<Props>();
 
-const drivers: Ref<BaseDriver[]> = ref(props.team.drivers);
 const allDrivers: Ref<BaseDriver[]> = ref(props.drivers);
 const driver: Ref<string> = ref('');
-const editMode: Ref<boolean> = ref(false);
 
-const deleteDriver = (driver: BaseDriver): void => {
-    if (! confirm(`Are you sure you want to remove this driver from ${props.team.name}?`)) {
-        return;
-    }
-
-    drivers.value = drivers.value.filter((d) => d.id !== driver.id);
-
-    router.delete(route('admin.teams.driver.delete', [ props.team, driver ]), {
-        replace: true,
-        preserveState: true,
-    });
-};
+const form = useForm<Form>({
+    drivers: props.team.drivers,
+});
 
 const addDriver = (): void => {
-    const id = driver.value;
-
-    if (id === '') {
-        return;
-    }
-
-    if (drivers.value.find((d) => d.id === id)) {
-        return;
-    }
-
-    const newDriver = allDrivers.value.find((d) => d.id === id);
+    const newDriver = allDrivers.value.find(d => d.id === driver.value);
 
     if (! newDriver) {
         return;
     }
 
-    router.put(route('admin.teams.driver.add', [ props.team, newDriver ]), {
-        replace: true,
-        preserveState: true,
-    });
-
-    drivers.value.push(newDriver);
-    allDrivers.value = allDrivers.value.filter((d) => d.id !== newDriver.id);
-
+    form.drivers.push(newDriver);
+    allDrivers.value = allDrivers.value.filter(d => d.id !== newDriver.id);
     driver.value = '';
 };
 
-const saveDriverRatings = (): void => {
-    const params = drivers.value.map((driver) => {
-        return {
-            id: driver.id,
-            rating: driver.rating,
-        };
-    });
-
-    router.put(route('admin.drivers.ratings.update'), { drivers: params }, { replace: true, preserveState: true });
+const deleteDriver = (driver: BaseDriver): void => {
+    form.drivers = form.drivers.filter(d => d.id !== driver.id);
+    allDrivers.value.push(driver);
 };
 
 breadcrumbStore.breadcrumbs = [
