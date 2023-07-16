@@ -23,7 +23,6 @@
         "@types/ziggy-js": "^1.3.2",
         "@vitejs/plugin-vue": "^3.0.1",
         "@vuedx/typescript-plugin-vue": "^0.7.6",
-        "bootstrap": "^5.1.3",
         "typescript": "^4.8.4",
         "vue": "^3.2.29",
         "ziggy-js": "^1.5.0"
