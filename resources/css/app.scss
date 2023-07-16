@@ -30,11 +30,14 @@ body {
     justify-content: center;
 
     a {
-      font-family: $fontFamilyMain;
       padding: 2rem;
       color: $white;
       text-decoration: none;
       transition: background-color 0.25s ease-out;
+
+      span {
+        font-family: $fontFamilyMain;
+      }
 
       &:hover {
         background-color: #000000;
