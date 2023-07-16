@@ -8,7 +8,7 @@
         </h4>
     </div>
 
-    <div class="m-b-5 flex justify-space-between">
+    <div class="m-b-5 flex justify-between">
         <button class="btn btn-primary" @click.prevent="runDev()">Run dev</button>
         <button class="btn btn-secondary" @click.prevent="saveDev()" v-if="devPerformed">Save dev</button>
     </div>

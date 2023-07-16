@@ -5,13 +5,13 @@
         <button type="submit" class="btn btn-primary">Save development ranges</button>
     </form>
 
-    <div class="grid grid-cols-2 gap-1">
-        <div class="col-2">
+    <div class="grid grid-cols-2 gap-4">
+        <div>
             <label for="min_age" class="form-label">Minimum age</label>
             <input type="number" id="min_age" v-model="state.min_age">
         </div>
 
-        <div class="col-2">
+        <div>
             <label for="max_age" class="form-label">Maximum age</label>
             <input type="number" id="max_age" v-model="state.max_age">
         </div>
@@ -25,7 +25,7 @@
 
     <div v-for="(ageRange, index) in form.ageRanges" class="m-t-4" :key="index">
         <h2>Age range: {{ ageRange.min_age }} - {{ ageRange.max_age }}</h2>
-        <div style="display: flex;justify-content: space-between" class="m-y-4">
+        <div class="m-y-4 flex justify-between">
             <button type="button" @click="addRatingRange(ageRange)" class="btn btn-secondary">Add dev range</button>
             <button type="button" @click="deleteAgeRange(ageRange)" class="btn btn-danger">
                 Delete age range

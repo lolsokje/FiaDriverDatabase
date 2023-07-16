@@ -2,7 +2,7 @@
     <h1>Update driver</h1>
 
     <form @submit.prevent="form.put(route('admin.drivers.update', [driver]))" class="m-t-5">
-        <div class="m-b-4 grid grid-cols-2 gap-1">
+        <div class="m-b-4 grid grid-cols-2 gap-6">
             <div>
                 <label for="series" class="form-label">Series</label>
                 <select v-model="form.series_id" id="series">
@@ -21,7 +21,7 @@
             </div>
         </div>
 
-        <div class="m-b-4 grid grid-cols-2 gap-1">
+        <div class="m-b-4 grid grid-cols-2 gap-6">
             <div>
                 <label for="first_name" class="form-label">First name</label>
                 <input type="text" id="first_name" v-model="form.first_name" required>
@@ -33,7 +33,7 @@
             </div>
         </div>
 
-        <div class="m-b-4 grid grid-cols-3 gap-1">
+        <div class="m-b-4 grid grid-cols-3 gap-6">
             <div>
                 <label for="dob" class="form-label">Date of birth</label>
                 <input type="date" id="dob" v-model="form.dob" required>
