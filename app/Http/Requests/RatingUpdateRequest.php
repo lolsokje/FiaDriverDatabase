@@ -12,7 +12,7 @@ class RatingUpdateRequest extends FormRequest
         return [
             'drivers' => ['required', 'array'],
             'drivers.*.id' => ['required', 'exists:drivers,id'],
-            'drivers.*.rating' => ['required', 'numeric', 'min:1'],
+            'drivers.*.rating' => ['required', 'numeric', 'min:0'],
             'drivers.*.dev' => ['required', 'numeric'],
             'drivers.*.new_rating' => ['required', 'numeric'],
         ];
