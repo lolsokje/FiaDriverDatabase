@@ -13,41 +13,43 @@
         <button class="btn btn-secondary" @click.prevent="saveDev()" v-if="devPerformed">Save dev</button>
     </div>
 
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Driver</th>
-            <th>Team</th>
-            <th class="centered">Series</th>
-            <th class="centered">Age</th>
-            <th class="centered">Rating</th>
-            <th class="centered">Dev</th>
-            <th class="centered">New rating</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="driver in devDrivers" :key="driver.id">
-            <DriverName :driver="driver"/>
-            <td>{{ driver.team?.name ?? 'Free agent' }}</td>
-            <td class="centered">
-                <SeriesStyle :team="driver.team" v-if="driver.team"/>
-                <template v-else>N/A</template>
-            </td>
-            <td class="centered">
-                {{ driver.age }}
-            </td>
-            <td class="centered">
-                {{ driver.rating }}
-            </td>
-            <td class="centered">
-                {{ driver.dev ?? '' }}
-            </td>
-            <td class="centered">
-                {{ driver.newRating }}
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="overflow-x-auto">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Driver</th>
+                <th>Team</th>
+                <th class="centered">Series</th>
+                <th class="centered">Age</th>
+                <th class="centered">Rating</th>
+                <th class="centered">Dev</th>
+                <th class="centered">New rating</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="driver in devDrivers" :key="driver.id">
+                <DriverName :driver="driver"/>
+                <td>{{ driver.team?.name ?? 'Free agent' }}</td>
+                <td class="centered">
+                    <SeriesStyle :team="driver.team" v-if="driver.team"/>
+                    <template v-else>N/A</template>
+                </td>
+                <td class="centered">
+                    {{ driver.age }}
+                </td>
+                <td class="centered">
+                    {{ driver.rating }}
+                </td>
+                <td class="centered">
+                    {{ driver.dev ?? '' }}
+                </td>
+                <td class="centered">
+                    {{ driver.newRating }}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </template>
 
 <script lang="ts" setup>

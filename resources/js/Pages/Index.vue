@@ -41,33 +41,35 @@
 
     <p class="m-b-4">{{ filteredDrivers.length }} of {{ drivers.length }} drivers shown</p>
 
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Team</th>
-            <th>Owner</th>
-            <th class="text-center">Series</th>
-            <th class="text-center">DOB</th>
-            <th class="text-center">Age</th>
-            <th class="text-center">Rating</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="driver in filteredDrivers" :key="driver.id">
-            <DriverName :driver="driver"/>
-            <td>{{ driver.team?.name ?? 'Free Agent' }}</td>
-            <td>{{ driver.team?.owner.name ?? 'N/A' }}</td>
-            <td class="centered medium">
-                <SeriesStyle :team="driver.team" v-if="driver.team"/>
-                <template v-else>N/A</template>
-            </td>
-            <td class="centered medium">{{ driver.date_of_birth }}</td>
-            <td class="centered small">{{ driver.age }}</td>
-            <td class="centered medium">{{ driver.rating }}</td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="overflow-x-auto">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Team</th>
+                <th>Owner</th>
+                <th class="text-center">Series</th>
+                <th class="text-center">DOB</th>
+                <th class="text-center">Age</th>
+                <th class="text-center">Rating</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="driver in filteredDrivers" :key="driver.id">
+                <DriverName :driver="driver"/>
+                <td>{{ driver.team?.name ?? 'Free Agent' }}</td>
+                <td>{{ driver.team?.owner.name ?? 'N/A' }}</td>
+                <td class="centered medium">
+                    <SeriesStyle :team="driver.team" v-if="driver.team"/>
+                    <template v-else>N/A</template>
+                </td>
+                <td class="centered medium">{{ driver.date_of_birth }}</td>
+                <td class="centered small">{{ driver.age }}</td>
+                <td class="centered medium">{{ driver.rating }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </template>
 
 <script setup lang="ts">

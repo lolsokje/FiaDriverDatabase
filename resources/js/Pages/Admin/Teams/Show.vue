@@ -2,32 +2,34 @@
     <h1 class="m-b-3">{{ team.name }}</h1>
     <h4>Owned by {{ team.owner.name }}</h4>
 
-    <table class="table m-y-4">
-        <thead>
-        <tr>
-            <th>Driver name</th>
-            <th class="centered">Rating</th>
-            <th class="centered">Age</th>
-            <th class="centered">ID</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="driver in form.drivers" :key="driver.id">
-            <DriverName :driver="driver"/>
-            <td class="centered medium">
-                <input type="number" v-model="driver.rating">
-            </td>
-            <td class="centered small">{{ driver.age }}</td>
-            <td class="centered medium">
-                <input type="text" v-model="driver.driver_id">
-            </td>
-            <td class="centered small">
-                <a @click.prevent="deleteDriver(driver)" class="text-primary" role="button">delete</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="overflow-x-auto">
+        <table class="table m-y-4">
+            <thead>
+            <tr>
+                <th>Driver name</th>
+                <th class="centered">Rating</th>
+                <th class="centered">Age</th>
+                <th class="centered">ID</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="driver in form.drivers" :key="driver.id">
+                <DriverName :driver="driver"/>
+                <td class="centered medium">
+                    <input type="number" v-model="driver.rating">
+                </td>
+                <td class="centered small">{{ driver.age }}</td>
+                <td class="centered medium">
+                    <input type="text" v-model="driver.driver_id">
+                </td>
+                <td class="centered small">
+                    <a @click.prevent="deleteDriver(driver)" class="text-primary" role="button">delete</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
     <form @submit.prevent="form.put(route('admin.teams.drivers.update', team))">
         <button class="btn btn-primary m-y-4">Save drivers</button>

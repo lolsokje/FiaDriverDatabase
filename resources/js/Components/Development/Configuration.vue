@@ -23,7 +23,7 @@
         </button>
     </div>
 
-    <div v-for="(ageRange, index) in form.ageRanges" class="m-t-4" :key="index">
+    <div v-for="(ageRange, index) in form.ageRanges" class="m-t-4 overflow-x-auto" :key="index">
         <h2>Age range: {{ ageRange.min_age }} - {{ ageRange.max_age }}</h2>
         <div class="m-y-4 flex justify-between">
             <button type="button" @click="addRatingRange(ageRange)" class="btn btn-secondary">Add dev range</button>

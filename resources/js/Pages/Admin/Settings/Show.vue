@@ -1,26 +1,28 @@
 <template>
     <h1>General settings</h1>
 
-    <table class="table m-t-5">
-        <thead>
-        <tr>
-            <th>Setting</th>
-            <th class="centered">Value</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>Year</td>
-            <td class="centered large">
-                <input type="number" v-model="settings.year">
-            </td>
-            <td class="centered small">
-                <button class="btn btn-primary" @click="saveSetting('year')">Save</button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="overflow-x-auto">
+        <table class="table m-t-5">
+            <thead>
+            <tr>
+                <th>Setting</th>
+                <th class="centered">Value</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Year</td>
+                <td class="centered large">
+                    <input type="number" v-model="settings.year">
+                </td>
+                <td class="centered small">
+                    <button class="btn btn-primary" @click="saveSetting('year')">Save</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </template>
 
 <script setup lang="ts">

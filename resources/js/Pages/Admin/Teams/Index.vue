@@ -21,31 +21,33 @@
         </div>
     </div>
 
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Owner</th>
-            <th class="text-center">Series</th>
-            <th colspan="2"></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="team in filteredTeams" :key="team.id">
-            <td>{{ team.name }}</td>
-            <td>{{ team.owner.name }}</td>
-            <td class="centered medium">
-                <SeriesStyle :team="team"/>
-            </td>
-            <td class="centered small">
-                <InertiaLink :href="route('admin.teams.edit', [team])">edit</InertiaLink>
-            </td>
-            <td class="centered small">
-                <InertiaLink :href="route('admin.teams.show', [team])">view</InertiaLink>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="overflow-x-auto">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Owner</th>
+                <th class="text-center">Series</th>
+                <th colspan="2"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="team in filteredTeams" :key="team.id">
+                <td>{{ team.name }}</td>
+                <td>{{ team.owner.name }}</td>
+                <td class="centered medium">
+                    <SeriesStyle :team="team"/>
+                </td>
+                <td class="centered small">
+                    <InertiaLink :href="route('admin.teams.edit', [team])">edit</InertiaLink>
+                </td>
+                <td class="centered small">
+                    <InertiaLink :href="route('admin.teams.show', [team])">view</InertiaLink>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </template>
 
 <script setup lang="ts">
