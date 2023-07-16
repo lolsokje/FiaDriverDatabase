@@ -1,37 +1,41 @@
 <template>
-    <h1 class="m-t-6 m-b-4">Drivers - {{ year }}</h1>
+    <h1 class="m-t-6 m-b-4 text-center">Drivers - {{ year }}</h1>
 
-    <div class="filter-wrapper m-b-4">
-        <div>
-            <label for="name" class="form-label">Name</label>
-            <input type="text" id="name" v-model="filters.name">
-        </div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 m-b-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label for="name" class="form-label">Name</label>
+                <input type="text" id="name" v-model="filters.name">
+            </div>
 
-        <div>
-            <label for="series" class="form-label">Series</label>
-            <select class="form-select" id="series" v-model="filters.series">
-                <option value="">Select a series</option>
-                <option v-for="item in series" :key="item.id" :value="item.id">{{ item.name }}</option>
-                <option value="fa">Free Agent</option>
-            </select>
-        </div>
-
-        <div>
-            <label for="series" class="form-label">Min Age</label>
-            <input type="text" id="min_age" v-model="filters.min_age">
-        </div>
-        <div>
-            <label for="series" class="form-label">Max Age</label>
-            <input type="text" id="max_age" v-model="filters.max_age">
+            <div>
+                <label for="series" class="form-label">Series</label>
+                <select class="form-select" id="series" v-model="filters.series">
+                    <option value="">Select a series</option>
+                    <option v-for="item in series" :key="item.id" :value="item.id">{{ item.name }}</option>
+                    <option value="fa">Free Agent</option>
+                </select>
+            </div>
         </div>
 
-        <div>
-            <label for="series" class="form-label">Min Rating</label>
-            <input type="text" id="min_rating" v-model="filters.min_rating">
-        </div>
-        <div>
-            <label for="series" class="form-label">Max Rating</label>
-            <input type="text" id="max_rating" v-model="filters.max_rating">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div>
+                <label for="series" class="form-label">Min Age</label>
+                <input type="text" id="min_age" v-model="filters.min_age">
+            </div>
+            <div>
+                <label for="series" class="form-label">Max Age</label>
+                <input type="text" id="max_age" v-model="filters.max_age">
+            </div>
+
+            <div>
+                <label for="series" class="form-label">Min Rating</label>
+                <input type="text" id="min_rating" v-model="filters.min_rating">
+            </div>
+            <div>
+                <label for="series" class="form-label">Max Rating</label>
+                <input type="text" id="max_rating" v-model="filters.max_rating">
+            </div>
         </div>
     </div>
 

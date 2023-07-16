@@ -3,7 +3,7 @@
 
     <InertiaLink :href="route('admin.teams.create')" class="btn btn-primary m-y-4">Add team</InertiaLink>
 
-    <div class="grid grid-cols-2 gap-6 m-b-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 m-b-4">
         <div>
             <select v-model="filters.owner" @change.prevent="filterTeams">
                 <option value="">Filter by owner</option>

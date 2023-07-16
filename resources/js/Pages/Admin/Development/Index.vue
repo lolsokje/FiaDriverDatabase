@@ -1,8 +1,12 @@
 <template>
     <h1>Driver development</h1>
 
-    <div class="tab-container m-t-4 m-b-5">
-        <div class="tab" v-for="devTab in Tabs" :class="{ 'active': active(devTab) }" @click.prevent="tab = devTab">
+    <div class="tab-container px-4 md:px-0 md:flex md:justify-between m-t-4 m-b-5">
+        <div class="tab mb-4 sm:mb-4 md:mb-0"
+             v-for="devTab in Tabs"
+             :class="{ 'active': active(devTab) }"
+             @click.prevent="tab = devTab"
+        >
             <h3>{{ devTab }}</h3>
         </div>
     </div>

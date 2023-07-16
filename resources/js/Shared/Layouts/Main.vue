@@ -1,7 +1,7 @@
 <template>
     <MainNav/>
 
-    <div class="container mt-3">
+    <div class="container px-4 sm:px-0 m-t-4">
         <slot/>
     </div>
 </template>

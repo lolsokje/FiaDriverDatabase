@@ -5,7 +5,7 @@
         <button type="submit" class="btn btn-primary">Save development ranges</button>
     </form>
 
-    <div class="grid grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
             <label for="min_age" class="form-label">Minimum age</label>
             <input type="number" id="min_age" v-model="state.min_age">

@@ -7,7 +7,7 @@
             <input type="text" id="name" v-model="form.name" required>
         </div>
 
-        <div class="m-b-4 grid grid-cols-2 gap-6">
+        <div class="m-b-4 grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
                 <label for="owner_id" class="form-label">Owner</label>
                 <select v-model="form.owner_id" id="owner_id" required>

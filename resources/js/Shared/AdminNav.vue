@@ -22,7 +22,7 @@
         </div>
     </nav>
 
-    <div class="container">
+    <div class="container px-4 sm:px-0">
         <Breadcrumbs :breadcrumbs="[]"/>
     </div>
 </template>

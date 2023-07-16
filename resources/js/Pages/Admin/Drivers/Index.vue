@@ -3,7 +3,7 @@
 
     <InertiaLink :href="route('admin.drivers.create')" class="btn btn-primary m-y-4">Add driver</InertiaLink>
 
-    <div class="filter-wrapper m-b-4">
+    <div class="grid grid-cols-1 w-full md:w-1/2 m-b-4">
         <div>
             <label for="series" class="form-label">Series</label>
             <select class="form-select" id="series" v-model="filters.series">
