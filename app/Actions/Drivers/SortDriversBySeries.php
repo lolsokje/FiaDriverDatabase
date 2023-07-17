@@ -16,8 +16,8 @@ class SortDriversBySeries
             return -1;
         }
 
-        if ($driverOne->series === $driverTwo->series) {
-            return $driverOne->driver_id <=> $driverTwo->driver_id;
+        if ($driverOne->series?->id === $driverTwo->series?->id) {
+            return $driverOne->full_id <=> $driverTwo->full_id;
         }
 
         return $driverOne->series->name <=> $driverTwo->series->name;

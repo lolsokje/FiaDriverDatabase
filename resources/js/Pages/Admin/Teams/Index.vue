@@ -25,6 +25,7 @@
         <table class="table">
             <thead>
             <tr>
+                <th class="centered">ID</th>
                 <th>Name</th>
                 <th>Owner</th>
                 <th class="text-center">Series</th>
@@ -33,6 +34,7 @@
             </thead>
             <tbody>
             <tr v-for="team in filteredTeams" :key="team.id">
+                <td class="centered small">{{ team.team_id }}</td>
                 <td>{{ team.name }}</td>
                 <td>{{ team.owner.name }}</td>
                 <td class="centered medium">

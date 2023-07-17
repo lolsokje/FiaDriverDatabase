@@ -6,6 +6,7 @@ import BaseDriver from '@/Interfaces/Drivers/BaseDriver';
 export default interface DetailedTeam extends BaseTeam {
     owner_id: string,
     series_id: string,
+    team_id: string,
     owner: BaseOwner,
     series: DetailedSeries,
     drivers: BaseDriver[],

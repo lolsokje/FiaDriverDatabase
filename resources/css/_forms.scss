@@ -35,3 +35,20 @@ select {
 select {
   min-height: 48px;
 }
+
+.form-group {
+  display: flex;
+  align-content: stretch;
+}
+
+.form-group > input {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.form-group-addon {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  background-color: lighten(#1F1F27, 5%);
+  padding: 0.75rem 1rem;
+}

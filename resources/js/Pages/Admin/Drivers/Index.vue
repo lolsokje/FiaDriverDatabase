@@ -30,7 +30,7 @@
             </thead>
             <tbody>
             <tr v-for="driver in filteredDrivers" :key="driver.id">
-                <td>{{ driver.driver_id }}</td>
+                <td>{{ driver.full_id }}</td>
                 <DriverName :driver="driver"/>
                 <td>{{ driver.team?.name ?? 'Free Agent' }}</td>
                 <td>{{ driver.team?.owner.name ?? 'N/A' }}</td>

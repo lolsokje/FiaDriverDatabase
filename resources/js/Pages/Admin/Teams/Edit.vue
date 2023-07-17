@@ -7,7 +7,7 @@
             <input type="text" id="name" v-model="form.name" required>
         </div>
 
-        <div class="m-b-4 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="m-b-4 grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
                 <label for="owner_id" class="form-label">Owner</label>
                 <select v-model="form.owner_id" id="owner_id" required>
@@ -22,6 +22,11 @@
                     <option value="">Select a series</option>
                     <option v-for="item in series" :key="item.id" :value="item.id">{{ item.name }}</option>
                 </select>
+            </div>
+
+            <div>
+                <label for="team_id" class="form-label">Team ID</label>
+                <input type="text" id="team_id" v-model="form.team_id">
             </div>
         </div>
 
@@ -47,6 +52,7 @@ interface Form {
     name: string,
     owner_id: string,
     series_id: string,
+    team_id: string,
 }
 
 const props = defineProps<Props>();
@@ -55,6 +61,7 @@ const form = useForm<Form>({
     name: props.team.name,
     owner_id: props.team.owner_id,
     series_id: props.team.series_id,
+    team_id: props.team.team_id ?? '',
 });
 
 breadcrumbStore.breadcrumbs = [

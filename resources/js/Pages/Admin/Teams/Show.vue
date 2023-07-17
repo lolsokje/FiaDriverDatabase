@@ -20,8 +20,11 @@
                     <input type="number" v-model="driver.rating">
                 </td>
                 <td class="centered small">{{ driver.age }}</td>
-                <td class="centered medium">
-                    <input type="text" v-model="driver.driver_id">
+                <td class="centered large">
+                    <div class="form-group">
+                        <span class="form-group-addon">{{ team.team_id }}</span>
+                        <input type="text" v-model="driver.driver_id">
+                    </div>
                 </td>
                 <td class="centered small">
                     <a @click.prevent="deleteDriver(driver)" class="text-primary" role="button">delete</a>

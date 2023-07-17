@@ -19,6 +19,7 @@ class Driver extends SnowflakeModel
         'full_name',
         'date_of_birth',
         'age',
+        'full_id',
     ];
 
     protected $casts = [
@@ -59,10 +60,11 @@ class Driver extends SnowflakeModel
     {
         return $this->hasOneThrough(Series::class, Team::class, 'id', 'id', 'team_id', 'series_id');
     }
-    //    public function series(): Attribute
-    //    {
-    //        return Attribute::get(fn () => $this->team?->series);
-    //    }
+
+    public function fullId(): Attribute
+    {
+        return Attribute::get(fn () => "{$this->team?->team_id}$this->driver_id");
+    }
 
     public function scopeWithoutFreeAgents(Builder $query): Builder
     {

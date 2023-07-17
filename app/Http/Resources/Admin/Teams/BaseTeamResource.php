@@ -14,6 +14,7 @@ class BaseTeamResource extends UnwrappedJsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'team_id' => $this->team_id,
         ];
     }
 }
