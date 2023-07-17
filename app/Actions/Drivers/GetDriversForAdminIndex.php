@@ -16,7 +16,7 @@ readonly class GetDriversForAdminIndex
     {
         return Driver::query()
             ->with([
-                'team' => ['owner', 'series'],
+                'team' => ['owner'],
                 'series',
             ])
             ->get()

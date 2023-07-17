@@ -1,14 +1,14 @@
 <template>
-    <span :style="team.series.style" class="series-style">
-        {{ team.series.name }}
+    <span :style="series.style" class="series-style">
+        {{ series.name }}
     </span>
 </template>
 
 <script lang="ts" setup>
-import DetailedTeam from '@/Interfaces/Teams/DetailedTeam';
+import DetailedSeries from '@/Interfaces/Series/DetailedSeries';
 
 interface Props {
-    team: DetailedTeam,
+    series: DetailedSeries,
 }
 
 defineProps<Props>();

@@ -60,7 +60,7 @@
                 <td>{{ driver.team?.name ?? 'Free Agent' }}</td>
                 <td>{{ driver.team?.owner.name ?? 'N/A' }}</td>
                 <td class="centered medium">
-                    <SeriesStyle :team="driver.team" v-if="driver.team"/>
+                    <SeriesStyle :series="driver.series" v-if="driver.team"/>
                     <template v-else>N/A</template>
                 </td>
                 <td class="centered medium">{{ driver.date_of_birth }}</td>

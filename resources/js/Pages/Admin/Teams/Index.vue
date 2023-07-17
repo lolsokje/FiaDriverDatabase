@@ -38,7 +38,7 @@
                 <td>{{ team.name }}</td>
                 <td>{{ team.owner.name }}</td>
                 <td class="centered medium">
-                    <SeriesStyle :team="team"/>
+                    <SeriesStyle :series="team.series"/>
                 </td>
                 <td class="centered small">
                     <InertiaLink :href="route('admin.teams.edit', [team])">edit</InertiaLink>

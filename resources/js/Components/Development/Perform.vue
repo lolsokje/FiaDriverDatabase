@@ -31,7 +31,7 @@
                 <DriverName :driver="driver"/>
                 <td>{{ driver.team?.name ?? 'Free agent' }}</td>
                 <td class="centered">
-                    <SeriesStyle :team="driver.team" v-if="driver.team"/>
+                    <SeriesStyle :series="driver.series" v-if="driver.team"/>
                     <template v-else>N/A</template>
                 </td>
                 <td class="centered">
