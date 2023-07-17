@@ -8,7 +8,7 @@ use Illuminate\Support\Collection;
 readonly class GetDriversForAdminIndex
 {
     public function __construct(
-        private SortDriversBySeries $sortDriversBySeries,
+        private SortBySeriesAndFullId $sortDriversBySeries,
     ) {
     }
 
