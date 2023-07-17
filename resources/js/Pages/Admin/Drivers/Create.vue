@@ -44,7 +44,12 @@
 
             <div>
                 <label for="driver_id" class="form-label">Driver ID</label>
-                <input type="text" id="driver_id" v-model="form.driver_id">
+                <div class="form-group">
+                    <span class="form-group-addon">
+                    {{ teamId }}
+                    </span>
+                    <input type="text" id="driver_id" v-model="form.driver_id">
+                </div>
             </div>
         </div>
 
@@ -77,6 +82,12 @@ interface Form {
 const props = defineProps<Props>();
 
 const teams: ComputedRef<BaseTeam[]> = computed(() => props.series.find(s => s.id === form.series_id)?.teams ?? []);
+
+const teamId: ComputedRef<string> = computed(() => {
+    const team: BaseTeam | undefined = teams.value.find(t => t.id === form.team_id);
+
+    return team ? team.team_id : '';
+});
 
 const form = useForm<Form>({
     series_id: props.series[0].id,
