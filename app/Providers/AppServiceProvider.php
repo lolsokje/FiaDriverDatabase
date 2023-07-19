@@ -11,12 +11,7 @@ use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
+    public function register(): void
     {
         $this->app->singleton('snowflake', function () {
             return (new Snowflake(
@@ -27,19 +22,12 @@ class AppServiceProvider extends ServiceProvider
                 ->setStartTimeStamp(strtotime('2022-01-25') * 1000)
                 ->setSequenceResolver(new RandomSequenceResolver);
         });
-
-        $this->app->singleton('general_settings', function () {
-            return (new GeneralSettings);
-        });
     }
 
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public function boot()
+    public function boot(): void
     {
+        Model::preventLazyLoading();
+
         Model::unguard();
 
         JsonResource::withoutWrapping();
