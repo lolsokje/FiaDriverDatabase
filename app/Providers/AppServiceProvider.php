@@ -8,6 +8,7 @@ use Godruoyi\Snowflake\Snowflake;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Testing\TestResponse;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -31,5 +32,9 @@ class AppServiceProvider extends ServiceProvider
         Model::unguard();
 
         JsonResource::withoutWrapping();
+
+        TestResponse::macro('assertRedirectToIndex', function () {
+            return $this->assertRedirectToRoute('index');
+        });
     }
 }

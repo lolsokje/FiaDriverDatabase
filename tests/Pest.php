@@ -46,3 +46,12 @@ function createAdminUser(): User
 {
     return User::factory()->admin()->create();
 }
+
+function potentiallyActingAs(?User $user)
+{
+    if ($user) {
+        test()->actingAs($user);
+    }
+
+    return test();
+}
