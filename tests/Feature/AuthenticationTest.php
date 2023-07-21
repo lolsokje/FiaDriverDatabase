@@ -61,6 +61,20 @@ it('does not mark non admins as admin', function () {
     $this->assertFalse(User::first()->admin);
 });
 
+test('a user can logout', function () {
+    $user = User::factory()->create();
+
+    Auth::login($user);
+
+    $this->assertNotNull(Auth::user());
+    $this->assertAuthenticatedAs($user);
+
+    $this->post(route('auth.logout'))
+        ->assertRedirectToRoute('index');
+
+    $this->assertNull(Auth::user());
+});
+
 function setupSocialiteMocking(
     ?string $id = '123456789',
     ?string $username = 'username',

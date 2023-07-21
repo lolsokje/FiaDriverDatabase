@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Resources\UserResource;
+use Auth;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -42,6 +44,7 @@ class HandleInertiaRequests extends Middleware
     {
         return array_merge(parent::share($request), [
             'activeRoute' => $request->route()->getName(),
+            'user' => fn () => Auth::user() ? new UserResource(Auth::user()) : null,
         ]);
     }
 }

@@ -35,9 +35,15 @@ body {
 
   .links {
     display: flex;
-    justify-content: center;
 
-    a {
+    &.centered {
+      justify-content: center;
+    }
+
+    a,
+    .link {
+      display: inline-block;
+      height: 100%;
       padding: 2rem;
       color: $white;
       text-decoration: none;
