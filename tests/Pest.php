@@ -13,6 +13,8 @@
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
+use Pest\Support\HigherOrderTapProxy;
+use Tests\TestCase;
 
 uses(Tests\TestCase::class, LazilyRefreshDatabase::class)->in('Feature', 'Unit');
 
@@ -47,7 +49,7 @@ function createAdminUser(): User
     return User::factory()->admin()->create();
 }
 
-function potentiallyActingAs(?User $user)
+function potentiallyActingAs(?User $user): TestCase|HigherOrderTapProxy
 {
     if ($user) {
         test()->actingAs($user);
