@@ -9,7 +9,7 @@
                 </div>
                 <div class="ms-auto">
                     <template v-if="user">
-                        <InertiaLink v-if="user.admin" :href="route('index')">
+                        <InertiaLink v-if="user.admin" :href="route('admin.series.index')">
                             <span>Admin</span>
                         </InertiaLink>
                         <InertiaLink :href="route('auth.logout')" method="POST" as="button" class="link">

@@ -7,10 +7,11 @@ use Closure;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class IsAdminMiddleware
 {
-    public function handle(Request $request, Closure $next): RedirectResponse|Response
+    public function handle(Request $request, Closure $next): RedirectResponse|Response|JsonResponse
     {
         $user = Auth::user();
 

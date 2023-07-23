@@ -1,5 +1,7 @@
 <template>
     <AdminNavigation/>
+
+    <slot/>
 </template>
 
 <script lang="ts" setup>
