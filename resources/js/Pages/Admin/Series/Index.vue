@@ -27,10 +27,13 @@
 
 <script lang="ts" setup>
 import Series from '@/Contracts/Series';
+import { breadcrumbStore } from '@/Stores/BreadcrumbStore';
 
 interface Props {
     series: Series[],
 }
 
 defineProps<Props>();
+
+breadcrumbStore.breadcrumbs = [];
 </script>

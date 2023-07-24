@@ -10,11 +10,20 @@
 import Drivers from '@/Forms/Admin/Drivers.vue';
 import Driver from '@/Contracts/Driver';
 import User from '@/Contracts/User';
+import { breadcrumbStore } from '@/Stores/BreadcrumbStore';
+import Breadcrumb from '@/Entities/Breadcrumb';
+import route from 'ziggy-js';
 
 interface Props {
     driver: Driver,
     users: User[],
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
+
+breadcrumbStore.breadcrumbs = [
+    new Breadcrumb('Drivers', route('admin.drivers.index')),
+    new Breadcrumb(props.driver.full_name),
+    new Breadcrumb('Edit'),
+];
 </script>

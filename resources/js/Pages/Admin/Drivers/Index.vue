@@ -31,10 +31,13 @@
 
 <script lang="ts" setup>
 import Driver from '@/Contracts/Driver';
+import { breadcrumbStore } from '@/Stores/BreadcrumbStore';
 
 interface Props {
     drivers: Driver[],
 }
 
 defineProps<Props>();
+
+breadcrumbStore.breadcrumbs = [];
 </script>
