@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\DriverController;
 use App\Http\Controllers\Admin\SeriesController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\DiscordController;
@@ -16,6 +17,7 @@ Route::group(['prefix' => 'admin/', 'as' => 'admin.', 'middleware' => 'is_admin'
     Route::put('series/{series}', [SeriesController::class, 'update'])->name('series.update');
 
     Route::resource('users', UserController::class)->except('destroy');
+    Route::resource('drivers', DriverController::class)->except('destroy');
 });
 
 Route::get('auth/discord/redirect', [DiscordController::class, 'redirect'])->name('auth.discord.redirect');
