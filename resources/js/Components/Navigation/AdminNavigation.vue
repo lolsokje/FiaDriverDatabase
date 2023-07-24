@@ -4,6 +4,9 @@
             <InertiaLink :href="route('admin.series.index')" :class="{ 'active': isActive('series') }">
                 <span>Series</span>
             </InertiaLink>
+            <InertiaLink :href="route('admin.users.index')" :class="{ 'active': isActive('users') }">
+                <span>Users</span>
+            </InertiaLink>
         </div>
     </nav>
 </template>
