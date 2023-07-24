@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Actions\Users\SortUsersByUsername;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Users\UserCreateRequest;
 use App\Http\Requests\Admin\Users\UserUpdateRequest;
@@ -16,7 +17,7 @@ class UserController extends Controller
     public function index(): Response
     {
         return Inertia::render('Admin/Users/Index', [
-            'users' => UserResource::collection(User::query()->orderBy('username')->get()),
+            'users' => UserResource::collection(SortUsersByUsername::handle()),
         ]);
     }
 

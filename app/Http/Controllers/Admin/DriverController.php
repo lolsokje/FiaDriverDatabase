@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Actions\Users\SortUsersByUsername;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Drivers\DriverCreateRequest;
 use App\Http\Requests\Admin\Drivers\DriverUpdateRequest;
 use App\Http\Resources\Admin\Drivers\DriverResource;
 use App\Http\Resources\UserResource;
 use App\Models\Driver;
-use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -25,7 +25,7 @@ class DriverController extends Controller
     public function create(): Response
     {
         return Inertia::render('Admin/Drivers/Create', [
-            'users' => UserResource::collection(User::query()->orderBy('username')->get()),
+            'users' => UserResource::collection(SortUsersByUsername::handle()),
         ]);
     }
 
@@ -41,7 +41,7 @@ class DriverController extends Controller
     {
         return Inertia::render('Admin/Drivers/Edit', [
             'driver' => new DriverResource($driver->load('user')),
-            'users' => UserResource::collection(User::query()->orderBy('username')->get()),
+            'users' => UserResource::collection(SortUsersByUsername::handle()),
         ]);
     }
 
