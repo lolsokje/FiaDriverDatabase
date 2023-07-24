@@ -7,6 +7,9 @@
             <InertiaLink :href="route('admin.users.index')" :class="{ 'active': isActive('users') }">
                 <span>Users</span>
             </InertiaLink>
+            <InertiaLink :href="route('admin.drivers.index')" :class="{ 'active': isActive('drivers') }">
+                <span>Drivers</span>
+            </InertiaLink>
         </div>
     </nav>
 </template>

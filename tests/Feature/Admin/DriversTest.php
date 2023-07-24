@@ -26,11 +26,14 @@ test('unauthorised users can not view the admin driver index page', function (?U
 })->with('admin.unauthorised');
 
 test('admins can view the driver create page', function () {
+    User::factory(3)->create();
+
     $this->actingAs(createAdminUser())
         ->get(route('admin.drivers.create'))
         ->assertOk()
         ->assertInertia(fn (AssertableInertia $page) => $page
-            ->component('Admin/Drivers/Create'));
+            ->component('Admin/Drivers/Create')
+            ->has('users', 4));
 });
 
 test('unauthorised users can not view the driver create page', function (?User $user) {
@@ -96,9 +99,7 @@ test('admins can view the driver edit page', function () {
             ->component('Admin/Drivers/Edit')
             ->has('driver', fn (AssertableInertia $prop) => $prop
                 ->where('id', $driver->id)
-                ->etc())
-            ->has('user', fn (AssertableInertia $prop) => $prop
-                ->where('id', $driver->user->id)
+                ->where('user.id', $driver->user_id)
                 ->etc()));
 });
 
