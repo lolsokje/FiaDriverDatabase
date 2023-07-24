@@ -30,7 +30,7 @@ class UserController extends Controller
         User::query()->create($request->validated());
 
         return to_route('admin.users.index')
-            ->with('notice', 'User created');
+            ->with('success', 'User created');
     }
 
     public function edit(User $user): Response
@@ -45,6 +45,6 @@ class UserController extends Controller
         $user->update($request->validated());
 
         return to_route('admin.users.edit', $user)
-            ->with('notice', 'User updated');
+            ->with('success', 'User updated');
     }
 }

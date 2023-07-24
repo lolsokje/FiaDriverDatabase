@@ -46,7 +46,7 @@ test('admins can create users', function () {
             'discord_id' => fake()->numberBetween(),
         ])
         ->assertRedirectToRoute('admin.users.index')
-        ->assertSessionHas('notice', 'User created');
+        ->assertSessionhas('success', 'User created');
 
     $this->assertCount(2, User::all());
 });
@@ -110,7 +110,7 @@ test('admins can update users', function () {
             'username' => 'changed',
         ])
         ->assertRedirectToRoute('admin.users.edit', $user)
-        ->assertSessionHas('notice', 'User updated');
+        ->assertSessionhas('success', 'User updated');
 
     $user->refresh();
 

@@ -32,7 +32,7 @@ class SeriesController extends Controller
         Series::query()->create($request->validated());
 
         return to_route('admin.series.index')
-            ->with('notice', 'Series created');
+            ->with('success', 'Series created');
     }
 
     public function edit(Series $series): Response
@@ -47,6 +47,6 @@ class SeriesController extends Controller
         $series->update($request->validated());
 
         return to_route('admin.series.edit', $series)
-            ->with('notice', 'Series updated');
+            ->with('success', 'Series updated');
     }
 }

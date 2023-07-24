@@ -48,7 +48,7 @@ test('admins can create series', function () {
     $this->actingAs(createAdminUser())
         ->post(route('admin.series.store'))
         ->assertRedirectToRoute('admin.series.index')
-        ->assertSessionHas('notice', 'Series created');
+        ->assertSessionhas('success', 'Series created');
 
     $this->assertCount(1, Series::all());
 });
@@ -109,7 +109,7 @@ test('admins can update series', function () {
             'secondary_colour' => '#654321',
         ])
         ->assertRedirectToRoute('admin.series.edit', $series)
-        ->assertSessionHas('notice', 'Series updated');
+        ->assertSessionhas('success', 'Series updated');
 
     $series->refresh();
 
