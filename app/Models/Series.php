@@ -13,4 +13,9 @@ class Series extends SnowflakeModel
     {
         return $this->hasMany(Season::class);
     }
+
+    public function teams(): HasMany
+    {
+        return $this->hasMany(Team::class);
+    }
 }

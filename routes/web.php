@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\DriverController;
 use App\Http\Controllers\Admin\SeasonController;
 use App\Http\Controllers\Admin\SeriesController;
+use App\Http\Controllers\Admin\TeamController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\DiscordController;
 use App\Http\Controllers\Auth\LogoutController;
@@ -16,6 +17,10 @@ Route::group(['prefix' => 'admin/', 'as' => 'admin.', 'middleware' => 'is_admin'
     Route::post('series', [SeriesController::class, 'store'])->name('series.store');
     Route::get('series/{series}/edit', [SeriesController::class, 'edit'])->name('series.edit');
     Route::put('series/{series}', [SeriesController::class, 'update'])->name('series.update');
+
+    Route::group(['prefix' => 'series/{series}'], function () {
+        Route::resource('teams', TeamController::class);
+    });
 
     Route::resource('series/{series}/seasons', SeasonController::class)->except('destroy');
     Route::resource('users', UserController::class)->except('destroy');
