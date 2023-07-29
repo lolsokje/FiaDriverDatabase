@@ -9,7 +9,7 @@
                 <thead>
                 <tr>
                     <th>Name</th>
-                    <th colspan="2"></th>
+                    <th colspan="3"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -17,6 +17,9 @@
                     <td>{{ s.name }}</td>
                     <td class="centered small">
                         <InertiaLink :href="route('admin.seasons.index', s)">seasons</InertiaLink>
+                    </td>
+                    <td class="centered small">
+                        <InertiaLink :href="route('admin.teams.index', s)">teams</InertiaLink>
                     </td>
                     <td class="centered small">
                         <InertiaLink :href="route('admin.series.edit', s)">edit</InertiaLink>

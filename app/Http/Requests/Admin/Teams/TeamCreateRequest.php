@@ -9,8 +9,6 @@ class TeamCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'series_id' => ['required', 'exists:series,id'],
-            'user_id' => ['required', 'exists:users,id'],
             'full_name' => ['required'],
             'short_name' => ['required'],
             'primary_colour' => ['required'],

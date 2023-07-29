@@ -10,7 +10,6 @@ return new class extends Migration {
         Schema::create('teams', function (Blueprint $table) {
             $table->unsignedBigInteger('id')->primary();
             $table->foreignId('series_id')->constrained();
-            $table->foreignId('user_id')->constrained();
             $table->string('full_name');
             $table->string('short_name');
             $table->string('primary_colour');
