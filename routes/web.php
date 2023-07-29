@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\DriverController;
+use App\Http\Controllers\Admin\EngineController;
 use App\Http\Controllers\Admin\SeasonController;
 use App\Http\Controllers\Admin\SeriesController;
 use App\Http\Controllers\Admin\TeamController;
@@ -20,6 +21,7 @@ Route::group(['prefix' => 'admin/', 'as' => 'admin.', 'middleware' => 'is_admin'
 
     Route::group(['prefix' => 'series/{series}'], function () {
         Route::resource('teams', TeamController::class);
+        Route::resource('engines', EngineController::class);
     });
 
     Route::resource('series/{series}/seasons', SeasonController::class)->except('destroy');
