@@ -9,12 +9,15 @@
                 <thead>
                 <tr>
                     <th>Name</th>
-                    <th colspan="3"></th>
+                    <th colspan="4"></th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr v-for="s in series" :key="s.id">
                     <td>{{ s.name }}</td>
+                    <td class="centered small">
+                        <InertiaLink :href="route('admin.engines.index', s)">engines</InertiaLink>
+                    </td>
                     <td class="centered small">
                         <InertiaLink :href="route('admin.seasons.index', s)">seasons</InertiaLink>
                     </td>
